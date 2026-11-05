@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="ΑΟΘ Γ΄ Λυκείου, Κεφάλαια 1 & 2: εργαστήρια ΚΠΔ και ελαστικότητας, λυμένα, άπειρες ασκήσεις και quiz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0e1f'/%3E%3Cpath d='M12 50 C 26 48 40 34 46 14' fill='none' stroke='%235eead4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='14' r='5' fill='%23ff9470'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>ΑΟΘ Εργαστήριο</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,600;0,800;1,400&family=Commissioner:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+/* Layout: night study console, chapter-coded (teal = Κεφ.1, coral = Κεφ.2) — fixed left rail of chapters, wide working canvas on the right; labs pair a live chart with step-by-step math. */
+:root{
+  --bg:#0a0e1f; --surface:#11173a; --surface-2:#19204a; --line:#283266; --fg:#eaedff; --muted:#9ba4d4;
+  --gold:#5eead4; --gold-2:#2bb5a0; --gold-fill:rgba(94,234,212,.15); --ok:#7ee08f; --bad:#ff6b8b; --ink-on-gold:#05231f;
+  --c2:#ff9470; --c2-2:#d9704f; --c2-fill:rgba(255,148,112,.17); --violet:#a99bff;
+  --hatch:rgba(255,107,139,.30);
+  --glow-1:rgba(94,234,212,.16); --glow-2:rgba(255,148,112,.14); --glow-3:rgba(169,155,255,.14);
+  --f-display:"Noto Serif Display","Noto Serif",Georgia,serif;
+  --f-body:"Commissioner","Noto Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono","DejaVu Sans Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#f3f5fc; --surface:#ffffff; --surface-2:#e9edfa; --line:#d5dbf0; --fg:#141933; --muted:#566086;
+  --gold:#0b8a78; --gold-2:#14a690; --gold-fill:rgba(11,138,120,.12); --ok:#23864a; --bad:#c8304f; --ink-on-gold:#ffffff;
+  --c2:#d4562f; --c2-2:#e57d5b; --c2-fill:rgba(212,86,47,.13); --violet:#6a55e0; --hatch:rgba(200,48,79,.22);
+  --glow-1:rgba(11,138,120,.10); --glow-2:rgba(212,86,47,.09); --glow-3:rgba(106,85,224,.08); color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f3f5fc; --surface:#ffffff; --surface-2:#e9edfa; --line:#d5dbf0; --fg:#141933; --muted:#566086;
+  --gold:#0b8a78; --gold-2:#14a690; --gold-fill:rgba(11,138,120,.12); --ok:#23864a; --bad:#c8304f; --ink-on-gold:#ffffff;
+  --c2:#d4562f; --c2-2:#e57d5b; --c2-fill:rgba(212,86,47,.13); --violet:#6a55e0; --hatch:rgba(200,48,79,.22);
+  --glow-1:rgba(11,138,120,.10); --glow-2:rgba(212,86,47,.09); --glow-3:rgba(106,85,224,.08); color-scheme:light}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--gold)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;font-weight:600;letter-spacing:-.005em}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100%}
+.rail{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;background:var(--surface);border-right:1px solid var(--line);padding:22px 14px 20px max(14px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px;overflow-y:auto}
+.brand{padding:4px 8px 14px;border-bottom:1px solid var(--line)}
+.brand .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+.brand .t{font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1;margin-top:6px}
+.brand .t span{color:var(--c2)}
+.brand .s{color:var(--muted);font-size:12.5px;margin-top:4px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .grp{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;padding:12px 10px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;color:var(--fg);text-decoration:none;font-size:14px}
+.nav a .d{width:7px;height:7px;border-radius:50%;border:1px solid var(--muted);flex:none}
+.nav a.seen .d{background:var(--gold-2);border-color:var(--gold-2)}
+.nav a:hover{background:var(--surface-2)}
+.nav a.on{background:var(--gold);color:var(--ink-on-gold);font-weight:600}
+.nav a.on .d{border-color:var(--ink-on-gold);background:var(--ink-on-gold)}
+.rail .foot{margin-top:auto;font-size:11.5px;color:var(--muted);padding:0 10px}
+
+main{min-width:0;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.view{display:flex;flex-direction:column;gap:22px}
+.vhead{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
+.vhead .eb{font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.vhead h1{font-size:clamp(28px,4vw,40px);line-height:1.05;margin-top:4px}
+.vhead p{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.vhead .right{margin-left:auto}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;min-width:0}
+.panel h2{font-size:20px;margin-bottom:10px}
+.panel h3{font-size:16px;margin-bottom:8px}
+.lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.muted{color:var(--muted)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lab{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:14px;min-width:0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* fractions & math */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.2;font-family:var(--f-mono);font-size:.95em}
+.fr>span:first-child{border-bottom:1.3px solid currentColor;padding:0 4px}
+.fr>span:last-child{padding:0 4px}
+.math{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:14.5px;line-height:2.1}
+.steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none;counter-reset:st}
+.steps li{counter-increment:st;display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start}
+.steps li::before{content:counter(st);font-family:var(--f-mono);font-size:12px;font-weight:700;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold-2);color:var(--gold);margin-top:3px}
+.hl{background:var(--gold-fill);padding:1px 6px;border-radius:4px}
+.verdict{display:inline-flex;align-items:center;gap:6px;font-weight:700;padding:3px 10px;border-radius:999px;font-size:13px;border:1px solid}
+.v-ok{color:var(--ok);border-color:var(--ok)}
+.v-bad{color:var(--bad);border-color:var(--bad)}
+.v-gold{color:var(--gold);border-color:var(--gold)}
+.tip{border-left:3px solid var(--gold);background:var(--surface-2);padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px}
+.tip b{color:var(--gold)}
+
+/* tables */
+.tbl-wrap{overflow-x:auto}
+table.t{border-collapse:collapse;font-size:14px;width:100%}
+table.t th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;padding:7px 8px;border-bottom:1px solid var(--line);font-weight:600}
+table.t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+table.t td.l{color:var(--gold);font-weight:700}
+table.t tr:last-child td{border-bottom:none}
+table.t input{width:72px;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:4px 6px;font-family:var(--f-mono)}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:7px;border:1px solid var(--gold-2);background:transparent;color:var(--gold);cursor:pointer;font-weight:600;font-size:14px}
+.btn:hover{background:var(--gold-fill)}
+.btn.solid{background:var(--gold);color:var(--ink-on-gold);border-color:var(--gold)}
+.btn.solid:hover{filter:brightness(1.06)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:13px}
+.chip.on{border-color:var(--gold);color:var(--gold);background:var(--gold-fill)}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:12px;color:var(--muted)}
+.field input[type=number],.field input[type=text],.field select{background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-family:var(--f-mono);width:100%}
+.field input.ok{border-color:var(--ok)}
+.field input.bad{border-color:var(--bad)}
+.slider{display:grid;grid-template-columns:110px minmax(0,1fr) 64px;gap:10px;align-items:center;font-size:13.5px}
+.slider output{font-family:var(--f-mono);text-align:right;color:var(--gold);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+
+/* charts */
+.chart{width:100%;height:auto;display:block}
+#kchart .chart{cursor:crosshair}
+[hidden]{display:none!important}
+.chart text{font-family:var(--f-mono);fill:var(--muted);font-size:12px}
+.chart .ax{stroke:var(--fg);stroke-width:1.2;opacity:.75}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* dashboard */
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+.hero .main{background:radial-gradient(60% 90% at 0% 0%,var(--glow-1),transparent 70%),radial-gradient(55% 80% at 100% 100%,var(--glow-2),transparent 70%),radial-gradient(40% 60% at 85% 0%,var(--glow-3),transparent 70%),var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;position:relative;overflow:hidden}
+.hero .main h1{font-size:clamp(40px,7vw,74px);font-weight:800;line-height:.9}
+.hero .main h1 span{color:var(--c2)}
+.hero .main .sub{font-family:var(--f-display);font-size:20px;margin-top:10px}
+.hero .main .sub2{font-family:var(--f-display);font-style:italic;color:var(--muted);margin-top:2px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tile .v{font-family:var(--f-mono);font-size:28px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums}
+.tile .bar{height:5px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.tile .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--violet))}
+.card-link{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;transition:border-color .15s}
+.card-link:hover{border-color:var(--gold)}
+.card-link .lbl{margin-bottom:2px}
+.card-link b{font-family:var(--f-display);font-size:17px;font-weight:600}
+.card-link span{color:var(--muted);font-size:13.5px}
+.plain{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:16px;align-items:start}
+.plain ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.plain .one{font-family:var(--f-display);font-size:20px;line-height:1.25;margin:4px 0 4px}
+.plain .one em{font-style:normal;color:var(--gold)}
+.c2 .plain .one em,.c2 .one em{color:var(--c2)}
+.plan{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.plan li{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.plan li:last-child{border-bottom:none}
+.plan .when{font-family:var(--f-mono);color:var(--gold);font-size:12.5px;padding-top:2px}
+
+/* formula cards */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.fcard .eq{font-family:var(--f-mono);font-size:17px;padding:6px 0;color:var(--fg)}
+.fcard p{margin:0;font-size:13.5px;color:var(--muted)}
+.fcard p b{color:var(--fg)}
+.fcard .tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px;align-self:flex-start}
+
+/* worked + exercises */
+.wk{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.wk .hd{display:flex;gap:12px;align-items:baseline;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface-2);flex-wrap:wrap}
+.wk .hd .n{font-family:var(--f-mono);font-size:11.5px;color:var(--gold);letter-spacing:.14em;font-weight:700}
+.wk .hd h3{font-size:18px;margin:0}
+.wk .hd .acts{margin-left:auto;display:flex;gap:6px}
+.wk .bd{padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:start}
+.wk .bd.full{grid-template-columns:minmax(0,1fr)}
+.wk .q{margin-bottom:10px}
+.wk .sol{border-top:1px dashed var(--line);margin-top:12px;padding-top:12px}
+.wk .steps li.hide{display:none}
+.wk .side{width:min(320px,100%)}
+.ex-list{display:flex;flex-direction:column;gap:12px}
+details.ex{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+details.ex>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+details.ex>summary::-webkit-details-marker{display:none}
+details.ex>summary .n{font-family:var(--f-mono);font-weight:700;background:var(--gold);color:var(--ink-on-gold);border-radius:5px;padding:1px 8px;font-size:13px}
+details.ex>summary b{font-family:var(--f-display);font-size:17px;font-weight:600}
+details.ex>summary .stars{margin-left:auto;font-family:var(--f-mono);color:var(--gold);font-size:12px}
+details.ex>summary .ch{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.1em}
+details.ex .body{padding:0 18px 16px;display:flex;flex-direction:column;gap:10px}
+details.ex .body ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:3px}
+.reveal{border:1px solid var(--gold-2);border-radius:8px;padding:12px 14px;background:var(--surface-2)}
+.reveal[hidden]{display:none}
+
+/* quiz */
+.qz{display:flex;flex-direction:column;gap:10px}
+.qitem{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.qitem .qt{display:flex;gap:10px}
+.qitem .qt .i{font-family:var(--f-mono);color:var(--gold);font-weight:700;min-width:22px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.opt{text-align:left;padding:8px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:14px}
+.opt:hover:not([disabled]){border-color:var(--gold-2)}
+.opt.right{border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.wrong{border-color:var(--bad);color:var(--bad)}
+.opt[disabled]{cursor:default}
+.qexp{margin-top:8px;font-size:13.5px;color:var(--muted)}
+.score{font-family:var(--f-mono);font-size:22px;color:var(--gold);font-weight:700}
+
+.c2 .lbl,.lbl.c2{color:var(--c2)}
+details.ex.ch2>summary .n{background:var(--c2);color:var(--ink-on-gold)}
+details.ex.ch2>summary .stars{color:var(--c2)}
+.c2-panel{border-top:3px solid var(--c2)}
+.c1-panel{border-top:3px solid var(--gold)}
+#v-demand-lab .vhead .eb,#v-demand-lab .slider output{color:var(--c2)}
+#v-demand-lab input[type=range]{accent-color:var(--c2)}
+#v-demand-lab .hl{background:var(--c2-fill)}
+/* generator */
+.gtypes{display:flex;gap:6px;flex-wrap:wrap}
+.gen-q{font-size:15.5px}
+.res{font-size:14px}
+
+/* motion */
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.draw{stroke-dasharray:1;stroke-dashoffset:0;animation:draw 1.2s cubic-bezier(.25,.8,.25,1) both}
+@keyframes pulse{0%{transform:scale(1);opacity:.75}100%{transform:scale(3);opacity:0}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
+@keyframes rise{from{transform:scaleY(.0)}to{transform:scaleY(1)}}
+.grow{transform-box:fill-box;transform-origin:bottom;animation:rise .8s cubic-bezier(.25,.8,.25,1) both}
+@keyframes fadein{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view:not([hidden])>.panel,.view:not([hidden])>.g2>.panel,.view:not([hidden]) .lab>.panel,.view:not([hidden]) .wk,.view:not([hidden]) .fcard,.view:not([hidden]) details.ex,.view:not([hidden]) .qitem,#tiles .tile{animation:fadein .5s ease both}
+table.t tr.cur td{background:var(--gold-fill)}
+#v-demand-lab .btn{color:var(--c2);border-color:var(--c2-2)}
+#v-demand-lab .btn.solid{background:var(--c2);color:var(--ink-on-gold);border-color:var(--c2)}
+#v-demand-lab .btn:hover{background:var(--c2-fill)}
+.btn.playing{background:var(--gold);color:var(--ink-on-gold)}
+#v-demand-lab .btn.playing{background:var(--c2);color:var(--ink-on-gold)}
+.new-tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--violet);border:1px solid var(--violet);border-radius:4px;padding:1px 6px}
+@media (max-width:980px){
+  .lab,.hero,.g2{grid-template-columns:minmax(0,1fr)}
+  .g3{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{position:sticky;height:auto;flex-direction:column;gap:8px;padding:10px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));z-index:5;border-right:none;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline;gap:10px;padding:0;border:none}
+  .brand .t{font-size:24px;margin:0}
+  .brand .s,.rail .foot,.nav .grp{display:none}
+  .nav{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:2px}
+  .nav a{white-space:nowrap;padding:6px 10px;font-size:13px}
+  .plain{grid-template-columns:minmax(0,1fr)}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .opts{grid-template-columns:minmax(0,1fr)}
+  .wk .bd{grid-template-columns:minmax(0,1fr)}
+  .slider{grid-template-columns:90px minmax(0,1fr) 54px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="shell">
+  <aside class="rail">
+    <div class="brand">
+      <div class="k">Γ΄ Λυκείου · Μάθημα 1</div>
+      <div class="t">ΑΟ<span>Θ</span></div>
+      <div class="s">Κεφάλαια 1 &amp; 2 · Εργαστήριο</div>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="grp">Ξεκίνα</div>
+      <a href="#home" data-v="home"><span class="d"></span>Πίνακας ελέγχου</a>
+      <a href="#typologio" data-v="typologio"><span class="d"></span>Τυπολόγιο</a>
+      <div class="grp">Εργαστήρια</div>
+      <a href="#kpd-lab" data-v="kpd-lab"><span class="d"></span>ΚΠΔ &amp; κόστος ευκαιρίας</a>
+      <a href="#demand-lab" data-v="demand-lab"><span class="d"></span>Ζήτηση &amp; ελαστικότητα</a>
+      <div class="grp">Εξάσκηση</div>
+      <a href="#lymena" data-v="lymena"><span class="d"></span>Λυμένα βήμα-βήμα</a>
+      <a href="#askiseis" data-v="askiseis"><span class="d"></span>Ασκήσεις (24)</a>
+      <a href="#gennitria" data-v="gennitria"><span class="d"></span>Άπειρες ασκήσεις</a>
+      <a href="#quiz" data-v="quiz"><span class="d"></span>Quiz θεωρίας</a>
+    </nav>
+    <div class="foot">Συμβάσεις σχολικού: ΚΕ σε απόλυτη τιμή · E<sub>D</sub> σημείου με P₁/Q₁ · τόξου με αθροίσματα.</div>
+  </aside>
+
+  <main><div class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section class="view" id="v-home">
+    <div class="hero">
+      <div class="main">
+        <div class="lbl">Αρχές Οικονομικής Θεωρίας · Μάθημα 01</div>
+        <h1 style="margin-top:10px">Κεφ. 1 <span>&amp;</span> 2</h1>
+        <div class="sub">Παραγωγικές δυνατότητες, κόστος ευκαιρίας, ζήτηση, ελαστικότητα</div>
+        <div class="sub2">Βλέπεις τον τύπο, παίζεις με το διάγραμμα, λύνεις.</div>
+        <div class="row" style="margin-top:18px">
+          <a class="btn solid" href="#kpd-lab">Άνοιξε το εργαστήριο ΚΠΔ</a>
+          <a class="btn" href="#gennitria">Νέα άσκηση</a>
+        </div>
+      </div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+
+    <div class="g2">
+      <div class="panel plain c1-panel">
+        <div>
+          <div class="lbl">Κεφάλαιο 1 · σε απλά λόγια</div>
+          <p class="one">Θέλουμε <em>πολλά</em>, έχουμε <em>λίγα</em>, άρα <em>διαλέγουμε</em>.</p>
+          <ul>
+            <li><b>Στενότητα:</b> ανάγκες χωρίς τέλος, πόροι (εργασία, έδαφος, κεφάλαιο) περιορισμένοι.</li>
+            <li><b>ΚΠΔ = «μενού» της οικονομίας.</b> Πάνω: όλα τέλεια. Μέσα: σπατάλη, ανεργία. Έξω: δεν γίνεται ακόμα.</li>
+            <li><b>Κόστος ευκαιρίας = τι χάνω για να πάρω κάτι.</b> Για 1 Χ παραπάνω, πόσα Ψ θυσιάζω;</li>
+          </ul>
+        </div>
+        <div id="mini-kpd"></div>
+      </div>
+      <div class="panel plain c2-panel c2">
+        <div>
+          <div class="lbl">Κεφάλαιο 2 · σε απλά λόγια</div>
+          <p class="one" style="--gold:var(--c2)">Πόσο <em>αγοράζουμε</em> και τι το <em>αλλάζει</em>;</p>
+          <ul>
+            <li><b>Νόμος ζήτησης:</b> ακριβαίνει το σουβλάκι, αγοράζεις λιγότερα.</li>
+            <li><b>Ελαστικότητα = πόσο «ευαίσθητος» είσαι στην τιμή.</b> Ψωμί: ανελαστική. Μια μάρκα αναψυκτικού: ελαστική.</li>
+            <li><b>ΣΔ = P·Q:</b> τα λεφτά που ξοδεύουν οι αγοραστές. Στο διάγραμμα είναι το σκιασμένο ορθογώνιο.</li>
+          </ul>
+        </div>
+        <div id="mini-dem"></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="panel">
+        <h2>Σχέδιο μαθήματος</h2>
+        <ol class="plan">
+          <li><span class="when">0–10΄</span><span><b>Quiz θεωρίας</b> για να δεις τι διάβασε μόνος του. <a href="#quiz">Άνοιγμα</a></span></li>
+          <li><span class="when">10–25΄</span><span><b>Τυπολόγιο Κεφ. 1</b> και <b>Λυμένα 1–2</b> στο εργαστήριο ΚΠΔ.</span></li>
+          <li><span class="when">25–40΄</span><span><b>Ασκήσεις 1, 2, 5</b> του φυλλαδίου. Για επιπλέον: γεννήτρια «Θέση σημείου».</span></li>
+          <li><span class="when">40–55΄</span><span><b>Τυπολόγιο Κεφ. 2</b>, <b>Λυμένα 3–5</b> με τα sliders του εργαστηρίου ζήτησης.</span></li>
+          <li><span class="when">55–60΄</span><span><b>Ασκ. 8, 9</b>. Τα υπόλοιπα για το σπίτι.</span></li>
+        </ol>
+      </div>
+      <div class="g2" style="gap:12px">
+        <a class="card-link" href="#typologio"><span class="lbl">Αναφορά</span><b>Τυπολόγιο</b><span>Όλοι οι τύποι, με φίλτρο αναζήτησης.</span></a>
+        <a class="card-link" href="#lymena"><span class="lbl">7 παραδείγματα</span><b>Λυμένα βήμα-βήμα</b><span>Ένα βήμα τη φορά, με το διάγραμμα δίπλα.</span></a>
+        <a class="card-link" href="#askiseis"><span class="lbl">24 ασκήσεις</span><b>Ασκήσεις</b><span>Οι 14 του PDF και 10 νέες, με λύσεις.</span></a>
+        <a class="card-link" href="#gennitria"><span class="lbl">14 τύποι</span><b>Άπειρες ασκήσεις</b><span>Νέοι αριθμοί κάθε φορά, με αυτόματο έλεγχο.</span></a>
+      </div>
+    </div>
+    <div class="panel" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px"><div class="lbl">Για εκτύπωση</div><h2 style="margin:4px 0 2px">Κατέβασε τα PDF</h2><p class="muted" style="margin:0;font-size:14px">Το φυλλάδιο του μαθητή χωρίς λύσεις, το βιβλίο καθηγητή με λύσεις και το εξώφυλλο.</p></div>
+      <div class="row"><a class="btn solid" href="pdf/AOTH_Kef1-2_Mathitis.pdf" download>Φυλλάδιο μαθητή</a><a class="btn" href="pdf/AOTH_Kef1-2_Kathigitis.pdf" download>Βιβλίο καθηγητή</a><a class="btn" href="pdf/AOTH_Kef1-2_Exofyllo.pdf" download>Εξώφυλλο</a></div>
+    </div>
+  </section>
+
+  <!-- ============ TYPOLOGIO ============ -->
+  <section class="view" id="v-typologio" hidden>
+    <div class="vhead">
+      <div><div class="eb">Αναφορά</div><h1>Τυπολόγιο</h1><p>Οι βασικοί τύποι των δύο κεφαλαίων. Γράψε μια λέξη για να φιλτράρεις.</p></div>
+      <div class="right field" style="width:min(260px,100%)"><label for="fsearch">Αναζήτηση</label><input id="fsearch" type="text" placeholder="π.χ. τόξου, ΣΔ, ΚΠΔ"></div>
+    </div>
+    <div class="chips" id="fchips"></div>
+    <div class="fgrid" id="fgrid"></div>
+  </section>
+
+  <!-- ============ KPD LAB ============ -->
+  <section class="view" id="v-kpd-lab" hidden>
+    <div class="vhead">
+      <div><div class="eb">Εργαστήριο · Κεφάλαιο 1</div><h1>ΚΠΔ &amp; κόστος ευκαιρίας</h1><p>Άλλαξε τον πίνακα ή πάτα πάνω στο διάγραμμα για να βάλεις σημείο. Όλα υπολογίζονται αμέσως, με τη λύση γραμμένη.</p></div>
+    </div>
+    <div class="chips" id="kpresets"></div>
+    <div class="lab">
+      <div class="panel stack">
+        <div class="row" style="justify-content:space-between"><h2 style="margin:0">Διάγραμμα</h2>
+          <div class="row"><button class="btn sm" id="ktravel">▶ Ταξίδι πάνω στην ΚΠΔ</button><label class="row" style="gap:6px;font-size:13.5px;cursor:pointer"><input type="checkbox" id="kshift"> Μετατόπιση δεξιά (+20%)</label></div></div>
+        <div id="kchart"></div>
+        <div class="legend"><span><i style="background:var(--gold-fill);border:1px solid var(--gold-2)"></i>Εφικτοί συνδυασμοί</span><span><i style="background:repeating-linear-gradient(45deg,var(--hatch) 0 3px,transparent 3px 6px)"></i>Ανέφικτοί</span><span><i style="background:var(--gold)"></i>ΚΠΔ</span></div>
+      </div>
+      <div class="stack">
+        <div class="panel">
+          <h3>Πίνακας παραγωγικών δυνατοτήτων</h3>
+          <div class="tbl-wrap"><table class="t" id="ktable"></table></div>
+          <div id="kwarn" class="muted" style="font-size:13px;margin-top:6px"></div>
+        </div>
+        <div class="panel">
+          <h3>Πού βρίσκεται το σημείο;</h3>
+          <div class="fields"><div class="field"><label for="kpx">Χ</label><input id="kpx" type="number" step="any"></div><div class="field"><label for="kpy">Ψ</label><input id="kpy" type="number" step="any"></div></div>
+          <div id="kpres" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="panel"><h3>Κόστος ευκαιρίας ανά τμήμα</h3><div class="tbl-wrap"><table class="t" id="ketable"></table></div><div id="ketrend" style="margin-top:8px"></div></div>
+      <div class="panel">
+        <h3>Πόσα Ψ θυσιάζω για να πάω από Χ<sub>α</sub> σε Χ<sub>β</sub>;</h3>
+        <div class="fields"><div class="field"><label for="kfa">Από Χ =</label><input id="kfa" type="number" step="any"></div><div class="field"><label for="kfb">Σε Χ =</label><input id="kfb" type="number" step="any"></div></div>
+        <div id="kfres" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEMAND LAB ============ -->
+  <section class="view" id="v-demand-lab" hidden>
+    <div class="vhead">
+      <div><div class="eb">Εργαστήριο · Κεφάλαιο 2</div><h1>Ζήτηση &amp; ελαστικότητα</h1><p>Κούνα τα sliders. Το σκιασμένο ορθογώνιο είναι η συνολική δαπάνη ΣΔ = P·Q στην αρχική τιμή, το διακεκομμένο στη νέα.</p></div>
+    </div>
+    <div class="chips" id="dmode"></div>
+    <div class="lab">
+      <div class="panel stack">
+        <h2 style="margin:0" id="dtitle">Q = 100 − 5P</h2>
+        <div id="dchart"></div>
+        <div class="legend"><span><i style="background:var(--c2)"></i>Ελαστικό τμήμα (|E| &gt; 1)</span><span><i style="background:var(--c2-2);opacity:.6"></i>Ανελαστικό τμήμα (|E| &lt; 1)</span><span><i style="background:var(--c2-fill);border:1px solid var(--c2-2)"></i>ΣΔ₁</span></div>
+      </div>
+      <div class="stack">
+        <div class="panel stack" id="dsliders"></div>
+        <div class="panel" id="dres"></div>
+        <div class="panel"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Πώς αλλάζει η ΣΔ με την τιμή</h3><button class="btn sm" id="dsweep">▶ Κίνησε την τιμή</button></div><p class="muted" style="margin:4px 0 6px;font-size:13px">Η ΣΔ γίνεται μέγιστη εκεί που |E| = 1.</p><div id="dsd"></div></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="panel" id="dsteps"></div>
+      <div class="panel">
+        <h3>Εισοδηματική ελαστικότητα</h3>
+        <p class="muted" style="margin:0 0 10px;font-size:13.5px">Η τιμή μένει σταθερή, αλλάζει το εισόδημα.</p>
+        <div class="fields">
+          <div class="field"><label for="ey1">Y₁</label><input id="ey1" type="number" value="1000"></div>
+          <div class="field"><label for="ey2">Y₂</label><input id="ey2" type="number" value="1200"></div>
+          <div class="field"><label for="eq1">Q₁</label><input id="eq1" type="number" value="40"></div>
+          <div class="field"><label for="eq2">Q₂</label><input id="eq2" type="number" value="50"></div>
+        </div>
+        <div id="eyres" style="margin-top:10px"></div>
+        <div id="eychart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LYMENA ============ -->
+  <section class="view" id="v-lymena" hidden>
+    <div class="vhead">
+      <div><div class="eb">Εξάσκηση</div><h1>Λυμένα βήμα-βήμα</h1><p>Πάτα «Επόμενο βήμα» και προσπάθησε να μαντέψεις τι ακολουθεί πριν το δεις.</p></div>
+    </div>
+    <div class="ex-list" id="wklist"></div>
+  </section>
+
+  <!-- ============ ASKISEIS ============ -->
+  <section class="view" id="v-askiseis" hidden>
+    <div class="vhead">
+      <div><div class="eb">Εξάσκηση</div><h1>Ασκήσεις</h1><p>Οι 14 του PDF και 10 νέες. Λύσ' τες στο τετράδιο και μετά άνοιξε τη λύση.</p></div>
+      <div class="right chips" id="exfilter"></div>
+    </div>
+    <div class="ex-list" id="exlist"></div>
+  </section>
+
+  <!-- ============ GENERATOR ============ -->
+  <section class="view" id="v-gennitria" hidden>
+    <div class="vhead">
+      <div><div class="eb">Εξάσκηση · 14 τύποι</div><h1>Άπειρες ασκήσεις</h1><p>Διάλεξε τύπο (ή «Ανάμεικτα») και πάτα «Νέα άσκηση». Νέοι αριθμοί κάθε φορά. Γράψε την απάντηση (κόμμα ή τελεία για δεκαδικά) και πάτα «Έλεγχος».</p></div>
+      <div class="right"><div class="lbl">Σωστές</div><div class="score" id="gscore">0 / 0</div></div>
+    </div>
+    <div class="gtypes" id="gtypes"></div>
+    <div class="panel stack" id="gbox"></div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="view" id="v-quiz" hidden>
+    <div class="vhead">
+      <div><div class="eb">Θεωρία</div><h1>Quiz θεωρίας</h1><p>14 Σωστό/Λάθος και 8 πολλαπλής επιλογής. Η απάντηση και η εξήγηση φαίνονται αμέσως.</p></div>
+      <div class="right row"><div><div class="lbl">Σκορ</div><div class="score" id="qscore">0 / 22</div></div><button class="btn sm" id="qreset">Από την αρχή</button></div>
+    </div>
+    <div class="qz" id="qlist"></div>
+  </section>
+
+  </div></main>
+</div>
+
+<script>
+(()=>{
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const fmt=(n,d=2)=>{if(n===Infinity||n===-Infinity)return '∞'; if(!isFinite(n))return '—'; const v=Math.round(n*10**d)/10**d; return (Object.is(v,-0)?0:v).toLocaleString('el-GR',{maximumFractionDigits:d});};
+const fr=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const par=v=>v<0?`(${fmt(v)})`:fmt(v);
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const parseNum=s=>{if(s==null)return NaN; s=String(s).trim().replace(/\s/g,'').replace('%',''); if(/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,''); return parseFloat(s.replace(',','.'));};
+const close=(a,b)=>Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.005);
+const charD=e=>{const a=Math.abs(e); if(Math.abs(a-1)<1e-9)return 'μοναδιαία'; return a>1?'ελαστική':'ανελαστική';};
+const verdict=(t,k)=>`<span class="verdict v-${k}">${t}</span>`;
+
+/* ---------- motion ---------- */
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function tween(ms,step,done){if(RM){step(1);done&&done();return;}const t0=performance.now();const f=now=>{const u=Math.min(1,(now-t0)/ms);const e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;step(e);if(u<1)requestAnimationFrame(f);else if(done)done();};requestAnimationFrame(f);}
+let animK=true,animD=true;
+/* ---------- storage (best-effort) ---------- */
+const KEY='aoth-lesson1';
+let S={seen:{},quiz:{},gen:{tries:0,correct:0}};
+try{const o=JSON.parse(localStorage.getItem(KEY)); if(o&&typeof o==='object') S=Object.assign(S,o);}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} tiles();};
+
+/* ---------- SVG chart frame ---------- */
+function frame(W,H,pad,xmax,ymax){
+  const x=v=>pad.l+v/xmax*(W-pad.l-pad.r), y=v=>H-pad.b-v/ymax*(H-pad.t-pad.b);
+  return {W,H,pad,x,y,ix:px=>(px-pad.l)/(W-pad.l-pad.r)*xmax,iy:py=>(H-pad.b-py)/(H-pad.t-pad.b)*ymax};
+}
+function niceStep(max,n=5){const raw=max/n,p=10**Math.floor(Math.log10(raw)),m=raw/p;return (m<1.5?1:m<3?2:m<7?5:10)*p;}
+function axes(f,xmax,ymax,xl,yl){
+  let s='';const sx=niceStep(xmax),sy=niceStep(ymax);
+  for(let v=sx;v<=xmax+1e-9;v+=sx){s+=`<line class="grid" x1="${f.x(v)}" y1="${f.y(0)}" x2="${f.x(v)}" y2="${f.pad.t}"/><text x="${f.x(v)}" y="${f.y(0)+16}" text-anchor="middle">${fmt(v)}</text>`;}
+  for(let v=sy;v<=ymax+1e-9;v+=sy){s+=`<line class="grid" x1="${f.x(0)}" y1="${f.y(v)}" x2="${f.W-f.pad.r}" y2="${f.y(v)}"/><text x="${f.x(0)-7}" y="${f.y(v)+4}" text-anchor="end">${fmt(v)}</text>`;}
+  s+=`<line class="ax" x1="${f.x(0)}" y1="${f.y(0)}" x2="${f.W-f.pad.r+4}" y2="${f.y(0)}"/><line class="ax" x1="${f.x(0)}" y1="${f.y(0)}" x2="${f.x(0)}" y2="${f.pad.t-6}"/>`;
+  s+=`<text x="${f.W-f.pad.r+2}" y="${f.y(0)-8}" text-anchor="end" style="fill:var(--fg);font-weight:700">${xl}</text><text x="${f.x(0)+8}" y="${f.pad.t-2}" style="fill:var(--fg);font-weight:700">${yl}</text>`;
+  return s;
+}
+let UID=0;
+function mkdefs(){UID++;return {d:`<defs><pattern id="hatch${UID}" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" style="stroke:var(--hatch)" stroke-width="3"/></pattern><marker id="arr${UID}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--fg)"/></marker></defs>`,h:`hatch${UID}`,a:`arr${UID}`};}
+
+/* ---------- ΚΠΔ math ---------- */
+const kes=t=>t.slice(0,-1).map((r,i)=>(r[1]-t[i+1][1])/(t[i+1][0]-r[0]));
+function psiMax(t,X){
+  const k=kes(t);
+  if(X<t[0][0]) return null;
+  for(let i=0;i<k.length;i++){ if(X<=t[i+1][0]+1e-9) return {seg:i,ke:k[i],val:t[i][1]-k[i]*(X-t[i][0]),from:t[i]}; }
+  return {seg:-1,val:-Infinity};
+}
+function pointStatus(t,X,Y){
+  const m=psiMax(t,X); if(!m) return {st:'bad',m};
+  if(m.seg<0) return {st:'out',m};
+  if(Math.abs(Y-m.val)<1e-9) return {st:'on',m};
+  return {st:Y<m.val?'in':'out',m};
+}
+const segName=i=>'ΑΒΓΔΕΖΗΘ'[i]+'→'+'ΑΒΓΔΕΖΗΘ'[i+1];
+
+function kpdSVG(t,opt={}){
+  const W=opt.W||560,H=opt.H||380,pad={l:48,r:22,t:24,b:36};
+  const sh=opt.shift?1.2:1;
+  const xm=t[t.length-1][0]*sh*1.1, ym=t[0][1]*sh*1.12;
+  const f=frame(W,H,pad,xm,ym); const L='ΑΒΓΔΕΖΗΘ';
+  const pts=t.map(r=>`${f.x(r[0])},${f.y(r[1])}`).join(' ');
+  const DF=mkdefs();
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Καμπύλη παραγωγικών δυνατοτήτων">${DF.d}`;
+  s+=`<path d="M${f.x(0)},${f.pad.t-6} L${W-pad.r},${f.pad.t-6} L${W-pad.r},${f.y(0)} L${f.x(t[t.length-1][0])},${f.y(0)} ${[...t].reverse().map(r=>`L${f.x(r[0])},${f.y(r[1])}`).join(' ')} Z" fill="url(#${DF.h})"/>`;
+  s+=`<polygon points="${f.x(0)},${f.y(0)} ${pts} ${f.x(t[t.length-1][0])},${f.y(0)}" fill="var(--gold-fill)"/>`;
+  s+=axes(f,xm,ym,'Χ','Ψ');
+  if(opt.shift){const p2=t.map(r=>`${f.x(r[0]*sh)},${f.y(r[1]*sh)}`).join(' ');s+=`<polyline points="${p2}" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="6 5" opacity=".8"/><text x="${f.x(t[1][0]*sh)+6}" y="${f.y(t[1][1]*sh)-8}" style="fill:var(--gold)">ΚΠΔ'</text>`;}
+  s+=`<polyline points="${pts}" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linejoin="round" ${opt.anim?'pathLength="1" class="draw"':''}/>`;
+  t.forEach((r,i)=>{s+=`<circle cx="${f.x(r[0])}" cy="${f.y(r[1])}" r="4.5" fill="var(--fg)"/><text x="${f.x(r[0])+8}" y="${f.y(r[1])-8}" style="fill:var(--fg);font-weight:700">${L[i]}</text>`;});
+  if(!opt.noLabels){s+=`<text x="${f.x(xm*0.08)}" y="${f.y(ym*0.1)}" style="fill:var(--gold);font-weight:700;letter-spacing:2px">ΕΦΙΚΤΟΙ</text><text x="${W-pad.r-8}" y="${pad.t+14}" text-anchor="end" style="fill:var(--bad);font-weight:700;letter-spacing:2px">ΑΝΕΦΙΚΤΟΙ</text>`;}
+  (opt.points||[]).forEach(p=>{const st=pointStatus(t,p.x,p.y).st;const c=st==='on'?'var(--fg)':st==='in'?'var(--ok)':'var(--bad)';
+    if(p.guide){const m=psiMax(t,p.x); if(m&&m.seg>=0){s+=`<line x1="${f.x(p.x)}" y1="${f.y(0)}" x2="${f.x(p.x)}" y2="${f.y(Math.max(p.y,m.val))}" stroke="${c}" stroke-dasharray="3 3" opacity=".7"/><circle cx="${f.x(p.x)}" cy="${f.y(m.val)}" r="3.5" fill="none" stroke="var(--gold)" stroke-width="1.5"/>`;}}
+    if(opt.pulse)s+=`<circle class="pulse" cx="${f.x(p.x)}" cy="${f.y(p.y)}" r="6.5" fill="none" stroke="${c}" stroke-width="2"/>`;
+    s+=`<circle cx="${f.x(p.x)}" cy="${f.y(p.y)}" r="6.5" fill="${st==='on'?'none':c}" stroke="${c}" stroke-width="2.5"/><text x="${f.x(p.x)+10}" y="${f.y(p.y)+4}" style="fill:${c};font-weight:700">${p.label||''}</text>`;});
+  return {svg:s+'</svg>',f};
+}
+
+/* ---------- demand math & chart ---------- */
+function demandSVG(D,opt={}){
+  const W=opt.W||560,H=opt.H||400,pad={l:52,r:26,t:26,b:38};
+  const lin=D.mode==='lin';
+  const Q=P=>lin?D.a+D.b*P:D.A/P;
+  const Pmax=lin?-D.a/D.b:Math.max(D.P1,D.P2)*2.2;
+  const Qmax=lin?D.a:Q(Math.min(D.P1,D.P2)/2.2);
+  const xm=Qmax*1.08, ym=Pmax*1.08; const f=frame(W,H,pad,xm,ym);
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Καμπύλη ζήτησης">`;
+  const q1=Q(D.P1),q2=Q(D.P2);
+  if(!opt.noRect){
+    s+=`<rect ${opt.anim?'class="grow"':''} x="${f.x(0)}" y="${f.y(D.P1)}" width="${Math.max(0,f.x(q1)-f.x(0))}" height="${Math.max(0,f.y(0)-f.y(D.P1))}" fill="var(--c2-fill)"/>`;
+    s+=`<rect x="${f.x(0)}" y="${f.y(D.P2)}" width="${Math.max(0,f.x(q2)-f.x(0))}" height="${Math.max(0,f.y(0)-f.y(D.P2))}" fill="none" stroke="var(--c2)" stroke-dasharray="5 4" stroke-width="1.3"/>`;
+  }
+  s+=axes(f,xm,ym,'Q','P');
+  if(lin){const mid=Pmax/2;
+    const an=opt.anim?'pathLength="1" class="draw"':'';
+    s+=`<line ${an} x1="${f.x(0)}" y1="${f.y(Pmax)}" x2="${f.x(Q(mid))}" y2="${f.y(mid)}" stroke="var(--c2)" stroke-width="3.4"/>`;
+    s+=`<line ${an} style="animation-delay:.5s" x1="${f.x(Q(mid))}" y1="${f.y(mid)}" x2="${f.x(D.a)}" y2="${f.y(0)}" stroke="var(--c2-2)" stroke-width="3" opacity=".75"/>`;
+    s+=`<circle cx="${f.x(Q(mid))}" cy="${f.y(mid)}" r="5.5" fill="none" stroke="var(--bad)" stroke-width="2"/><text x="${f.x(Q(mid))+10}" y="${f.y(mid)-6}" style="fill:var(--bad);font-weight:700">|E|=1</text>`;
+    s+=`<text x="${f.x(Q(Pmax*0.8))+12}" y="${f.y(Pmax*0.8)}" style="fill:var(--c2)">ελαστική</text><text x="${f.x(Q(Pmax*0.18))+10}" y="${f.y(Pmax*0.18)-10}">ανελαστική</text>`;
+  } else {
+    let d='';const pmin=D.A/Qmax;for(let i=0;i<=80;i++){const P=pmin+(Pmax-pmin)*i/80;d+=(i?'L':'M')+f.x(Q(P))+','+f.y(P);} s+=`<path d="${d}" fill="none" stroke="var(--c2)" stroke-width="3" ${opt.anim?'pathLength="1" class="draw"':''}/>`;
+  }
+  if(!opt.noRect){s+=`<text x="${f.x(q1/2)}" y="${f.y(D.P1/2)}" text-anchor="middle" style="fill:var(--c2);font-weight:700">ΣΔ₁ = ${fmt(D.P1*q1)}</text>`;}
+  [[D.P1,q1,'1'],[D.P2,q2,'2']].forEach(([P,q,n])=>{s+=`<line x1="${f.x(0)}" y1="${f.y(P)}" x2="${f.x(q)}" y2="${f.y(P)}" stroke="var(--muted)" stroke-dasharray="3 3"/><line x1="${f.x(q)}" y1="${f.y(0)}" x2="${f.x(q)}" y2="${f.y(P)}" stroke="var(--muted)" stroke-dasharray="3 3"/>${opt.pulse?`<circle class="pulse" cx="${f.x(q)}" cy="${f.y(P)}" r="6" fill="none" stroke="var(--c2)" stroke-width="2"/>`:''}<circle cx="${f.x(q)}" cy="${f.y(P)}" r="6" fill="var(--fg)"/><text x="${f.x(q)+10}" y="${f.y(P)-8}" style="fill:var(--fg);font-weight:700">${n==='1'?'Α':'Β'} (${fmt(q)}, ${fmt(P)})</text>`;});
+  return s+'</svg>';
+}
+
+/* ---------- mini charts on home ---------- */
+function miniCharts(){
+  $('#mini-kpd').innerHTML=kpdSVG([[0,100],[10,90],[20,70],[30,40],[40,0]],{W:300,H:260,noLabels:true,anim:true,pulse:true,points:[{x:12,y:40,label:'μέσα'},{x:25,y:55,label:'πάνω'},{x:34,y:70,label:'έξω'}]}).svg;
+  $('#mini-dem').innerHTML=demandSVG({mode:'lin',a:100,b:-5,P1:12,P2:16},{W:300,H:260,anim:true,pulse:true});
+  $$('#mini-kpd svg, #mini-dem svg').forEach(s=>s.style.cursor='default');
+}
+
+/* ---------- tiles ---------- */
+const VIEWS=['home','typologio','kpd-lab','demand-lab','lymena','askiseis','gennitria','quiz'];
+function tiles(){
+  const qa=Object.values(S.quiz).length, qc=Object.values(S.quiz).filter(Boolean).length;
+  const seen=VIEWS.filter(v=>S.seen[v]).length;
+  const g=S.gen;
+  const T=[
+    ['Quiz θεωρίας',`${qc}/22`,qc/22,`${qa} απαντημένες`],
+    ['Γεννήτρια',`${g.correct}/${g.tries}`,g.tries?g.correct/g.tries:0,'σωστές / προσπάθειες'],
+    ['Ενότητες',`${seen}/${VIEWS.length}`,seen/VIEWS.length,'που έχεις ανοίξει'],
+    ['Ασκήσεις',`${Object.keys(S.sol||{}).length}/24`,Object.keys(S.sol||{}).length/24,'λύσεις που άνοιξες']
+  ];
+  $('#tiles').innerHTML=T.map(([l,v,p,s])=>`<div class="tile"><div class="lbl">${l}</div><div class="v">${v}</div><div class="bar"><i style="width:${Math.round(Math.min(1,p)*100)}%"></i></div><div class="muted" style="font-size:12.5px">${s}</div></div>`).join('');
+  $$('#nav a').forEach(a=>a.classList.toggle('seen',!!S.seen[a.dataset.v]));
+  const gs=$('#gscore'); if(gs) gs.textContent=`${g.correct} / ${g.tries}`;
+}
+
+/* ---------- TYPOLOGIO ---------- */
+const F=[
+ ['Κεφ. 1','Κόστος ευκαιρίας του Χ',`ΚΕ<sub>Χ</sub> = ${fr('ΔΨ','ΔΧ')}`,'Πόσες μονάδες <b>Ψ θυσιάζω</b> για <b>1 επιπλέον Χ</b>. Απόλυτη τιμή.'],
+ ['Κεφ. 1','Κόστος ευκαιρίας του Ψ',`ΚΕ<sub>Ψ</sub> = ${fr('ΔΧ','ΔΨ')}`,'Πόσες μονάδες <b>Χ θυσιάζω</b> για <b>1 επιπλέον Ψ</b>.'],
+ ['Κεφ. 1','Αντίστροφα',`ΚΕ<sub>Ψ</sub> = ${fr('1','ΚΕ<sub>Χ</sub>')}`,'Μόνο μεταξύ <b>των ίδιων</b> διαδοχικών συνδυασμών.'],
+ ['Κεφ. 1','Θυσία για πολλές μονάδες','Θυσία Ψ = ΚΕ<sub>Χ</sub> · ΔΧ','Σε κάθε τμήμα χωριστά και μετά <b>άθροισμα</b>.'],
+ ['Κεφ. 1','Μέγιστο Ψ για δοσμένο Χ','Ψ<sub>max</sub> = Ψ<sub>αρχ</sub> − ΚΕ<sub>Χ</sub>·(Χ − Χ<sub>αρχ</sub>)','Βρες το <b>τμήμα</b> του Χ και πάρε το ΚΕ του.'],
+ ['Κεφ. 1','Θέση συνδυασμού','Ψ = Ψ<sub>max</sub> · Ψ &lt; Ψ<sub>max</sub> · Ψ &gt; Ψ<sub>max</sub>','<b>Πάνω</b> (άριστος) · <b>μέσα</b> (υποαπασχόληση) · <b>έξω</b> (ανέφικτος).'],
+ ['Κεφ. 1','Μετατόπιση ΚΠΔ','δεξιά ⟵ τεχνολογία, συντελεστές','<b>Αριστερά:</b> καταστροφή συντελεστών. <b>Ανεργία:</b> δεν μετατοπίζει, πάμε μέσα.'],
+ ['Κεφ. 1','Αυξανόμενο ΚΕ','ΚΠΔ κοίλη · σταθερό ΚΕ ⇒ ευθεία','Οι συντελεστές <b>δεν είναι εξίσου κατάλληλοι</b> για όλα τα αγαθά.'],
+ ['Κεφ. 2','Γραμμική συνάρτηση','Q<sub>D</sub> = α + β·P','α &gt; 0, β &lt; 0. <b>β = ΔQ/ΔP</b>, μετά <b>α = Q − β·P</b>.'],
+ ['Κεφ. 2','Ισοσκελής υπερβολή',`Q<sub>D</sub> = ${fr('A','P')} ⇒ P·Q = A`,'ΣΔ <b>σταθερή</b>, |E<sub>D</sub>| = 1 παντού.'],
+ ['Κεφ. 2','Ελαστικότητα σημείου',`E<sub>D</sub> = ${fr('ΔQ','ΔP')}·${fr('P₁','Q₁')}`,'Με το <b>αρχικό</b> σημείο. Γραμμική: <b>E = β·P/Q</b>.'],
+ ['Κεφ. 2','Ελαστικότητα τόξου',`E<sub>τ</sub> = ${fr('ΔQ','ΔP')}·${fr('P₁+P₂','Q₁+Q₂')}`,'Ίδιο αποτέλεσμα <b>προς όποια κατεύθυνση</b>.'],
+ ['Κεφ. 2','Με ποσοστά','%ΔQ = E<sub>D</sub> · %ΔP','Νέα ποσότητα: <b>Q₂ = Q₁·(1 + %ΔQ)</b>.'],
+ ['Κεφ. 2','Συνολική δαπάνη','ΣΔ = P · Q','<b>Ελαστική:</b> ΣΔ αντίθετα από P. <b>Ανελαστική:</b> μαζί με P. <b>|E|=1:</b> σταθερή.'],
+ ['Κεφ. 2','Ποσοστό ΣΔ','(1 + %ΔP)·(1 + %ΔQ) − 1','Τα ποσοστά <b>πολλαπλασιάζονται</b>, δεν αφαιρούνται.'],
+ ['Κεφ. 2','Εισοδηματική ελαστικότητα',`E<sub>Y</sub> = ${fr('ΔQ','ΔY')}·${fr('Y₁','Q₁')}`,'E<sub>Y</sub> &gt; 0 <b>κανονικό</b> · E<sub>Y</sub> &lt; 0 <b>κατώτερο</b>. Τιμή σταθερή.'],
+ ['Κεφ. 2','Μετακίνηση ή μετατόπιση','P ⇒ πάνω στην καμπύλη','Εισόδημα, προτιμήσεις, τιμές άλλων ⇒ <b>μετατόπιση</b> της καμπύλης.'],
+ ['Κεφ. 2','Ευθεία ζήτηση','μέσο: |E| = 1','Πάνω από το μέσο <b>ελαστική</b>, κάτω <b>ανελαστική</b>. Κάθετη: E = 0.']
+];
+let fFilter='all';
+function renderF(){
+  const q=($('#fsearch').value||'').toLowerCase();
+  $('#fchips').innerHTML=['all','Κεφ. 1','Κεφ. 2'].map(c=>`<button class="chip ${fFilter===c?'on':''}" data-c="${c}">${c==='all'?'Όλα':c}</button>`).join('');
+  $('#fgrid').innerHTML=F.filter(r=>(fFilter==='all'||r[0]===fFilter)&&(!q||(r.join(' ').toLowerCase().includes(q)))).map(r=>`<div class="fcard"><span class="tag">${r[0]}</span><div class="lbl">${r[1]}</div><div class="eq">${r[2]}</div><p>${r[3]}</p></div>`).join('')||'<p class="muted">Κανένας τύπος με αυτή τη λέξη. Δοκίμασε «ελαστικότητα».</p>';
+}
+$('#fsearch').addEventListener('input',renderF);
+$('#fchips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){fFilter=b.dataset.c;renderF();}});
+
+/* ---------- KPD LAB ---------- */
+const KP={
+ l1:['Λυμένο 1',[[0,100],[10,90],[20,70],[30,40],[40,0]],[15,85]],
+ a1:['Άσκηση 1–2',[[0,60],[10,55],[20,45],[30,30],[40,0]],[15,52]],
+ a3:['Άσκηση 3–4',[[0,200],[20,190],[40,160],[60,100],[80,0]],[50,130]],
+ a7:['Άσκηση 7 (ευθεία)',[[0,120],[10,90],[20,60],[30,30],[40,0]],[25,45]],
+ n15:['Άσκηση 15',[[0,50],[5,48],[10,42],[15,30],[20,0]],[12,38]],
+ bk:['Σχολικό βιβλίο',[[0,220],[40,210],[80,180],[120,140],[160,80],[200,0]],[80,80]]
+};
+let K={key:'l1',t:KP.l1[1].map(r=>r.slice()),pt:KP.l1[2].slice(),shift:false,fa:15,fb:35};
+let travel=null;
+function setPreset(k,instant){stopTravel();const T=KP[k][1].map(r=>r.slice()),P=KP[k][2].slice();K.key=k;const L=T[T.length-1][0];K.fa=Math.round(L*0.35);K.fb=Math.round(L*0.85);if(k==='l1'){K.fa=15;K.fb=35;}if(k==='a3'){K.fa=30;K.fb=50;}
+  if(instant||T.length!==K.t.length){K.t=T;K.pt=P;animK=true;renderK(true);return;}
+  const F=K.t.map(r=>r.slice()),FP=K.pt.slice();
+  tween(700,u=>{K.t=F.map((r,i)=>[r[0]+(T[i][0]-r[0])*u,r[1]+(T[i][1]-r[1])*u]);K.pt=[FP[0]+(P[0]-FP[0])*u,FP[1]+(P[1]-FP[1])*u];renderK(false);},()=>{K.t=T;K.pt=P;renderK(true);});}
+function stopTravel(){if(travel){cancelAnimationFrame(travel);travel=null;}const b=$('#ktravel');if(b){b.textContent='▶ Ταξίδι πάνω στην ΚΠΔ';b.classList.remove('playing');}}
+$('#ktravel').addEventListener('click',()=>{if(travel){stopTravel();renderK(false);return;}const b=$('#ktravel');b.textContent='■ Σταμάτα';b.classList.add('playing');const t0=performance.now(),Lx=K.t[K.t.length-1][0],dur=6000;
+  const f=now=>{const u=((now-t0)%dur)/dur;const X=Lx*u;const m=psiMax(K.t,X);K.pt=[Math.round(X*100)/100,Math.round(m.val*100)/100];$('#kpx').value=fmt(K.pt[0]).replace(',','.');$('#kpy').value=fmt(K.pt[1]).replace(',','.');renderK(false);travel=requestAnimationFrame(f);};
+  travel=requestAnimationFrame(f);});
+function renderK(rebuildTable){
+  const t=K.t, L='ΑΒΓΔΕΖΗΘ';
+  $('#kpresets').innerHTML=Object.entries(KP).map(([k,v])=>`<button class="chip ${K.key===k?'on':''}" data-k="${k}">${v[0]}</button>`).join('');
+  if(rebuildTable){
+    $('#ktable').innerHTML=`<tr><th></th><th>Χ</th><th>Ψ</th></tr>`+t.map((r,i)=>`<tr><td class="l">${L[i]}</td><td><input type="number" step="any" id="kx${i}" data-i="${i}" data-c="0" value="${r[0]}" aria-label="Χ ${L[i]}"></td><td><input type="number" step="any" id="ky${i}" data-i="${i}" data-c="1" value="${r[1]}" aria-label="Ψ ${L[i]}"></td></tr>`).join('');
+    $('#kpx').value=K.pt[0];$('#kpy').value=K.pt[1];$('#kfa').value=K.fa;$('#kfb').value=K.fb;$('#kshift').checked=K.shift;
+  }
+  let ok=true;for(let i=1;i<t.length;i++){if(!(t[i][0]>t[i-1][0]&&t[i][1]<t[i-1][1]))ok=false;}
+  $('#kwarn').innerHTML=ok?'Μπορείς να αλλάξεις όποιον αριθμό θέλεις.':'<span style="color:var(--bad)">Το Χ πρέπει να αυξάνεται και το Ψ να μειώνεται από γραμμή σε γραμμή.</span>';
+  if(!ok) return;
+  const {svg,f}=kpdSVG(t,{shift:K.shift,anim:animK,pulse:!travel,points:[{x:K.pt[0],y:K.pt[1],label:'Σ',guide:true}]});animK=false;
+  $('#kchart').innerHTML=svg; $('#kchart').dataset.f=JSON.stringify({W:f.W,H:f.H,pad:f.pad,xm:t[t.length-1][0]*(K.shift?1.2:1)*1.1,ym:t[0][1]*(K.shift?1.2:1)*1.12});
+  const k=kes(t);
+  $('#ketable').innerHTML=`<tr><th>Τμήμα</th><th>ΔΧ</th><th>ΔΨ</th><th>ΚΕ<sub>Χ</sub> = ΔΨ/ΔΧ</th><th>ΚΕ<sub>Ψ</sub></th></tr>`+k.map((v,i)=>{const dx=t[i+1][0]-t[i][0],dy=t[i][1]-t[i+1][1];const cur=K.pt[0]>t[i][0]&&K.pt[0]<=t[i+1][0]||(i===0&&K.pt[0]===0);return `<tr class="${cur?'cur':''}"><td class="l">${segName(i)}</td><td>${fmt(dx)}</td><td>${fmt(dy)}</td><td>${fmt(dy)}/${fmt(dx)} = <b>${fmt(v)}</b></td><td>${fmt(1/v)}</td></tr>`;}).join('');
+  const inc=k.every((v,i)=>i===0||v>k[i-1]+1e-9), cst=k.every(v=>Math.abs(v-k[0])<1e-9);
+  $('#ketrend').innerHTML=cst?verdict('Σταθερό ΚΕ ⇒ ευθεία ΚΠΔ','gold'):inc?verdict('Αυξανόμενο ΚΕ ⇒ κοίλη ΚΠΔ','ok'):verdict('Δεν είναι αυξανόμενο σε όλα τα τμήματα','bad');
+  // point
+  const [X,Y]=K.pt, r=pointStatus(t,X,Y);
+  let h='';
+  if(r.st==='bad') h='<p class="muted">Το Χ πρέπει να είναι μέσα στα όρια του πίνακα.</p>';
+  else if(r.m.seg<0) h=`<ol class="steps"><li>Το Χ = ${fmt(X)} είναι μεγαλύτερο από το μέγιστο Χ = ${fmt(t[t.length-1][0])}. Δεν μπορεί να παραχθεί ποτέ με τους σημερινούς πόρους.</li></ol><p>${verdict('Ανέφικτο','bad')}</p>`;
+  else{const m=r.m;
+    h=`<ol class="steps math">
+      <li><span>Το Χ = ${fmt(X)} ανήκει στο τμήμα <b>${segName(m.seg)}</b>, όπου ΚΕ<sub>Χ</sub> = <b>${fmt(m.ke)}</b>.</span></li>
+      <li><span>Ψ<sub>max</sub> = ${fmt(m.from[1])} − ${fmt(m.ke)}·(${fmt(X)} − ${fmt(m.from[0])}) = <b class="hl">${fmt(m.val)}</b></span></li>
+      <li><span>Σύγκριση: Ψ = ${fmt(Y)} ${r.st==='on'?'=':r.st==='in'?'&lt;':'&gt;'} ${fmt(m.val)}</span></li></ol>
+      <p style="margin:8px 0 0">${r.st==='on'?verdict('Πάνω στην ΚΠΔ · άριστος','gold'):r.st==='in'?verdict('Μέσα · εφικτός με υποαπασχόληση','ok'):verdict('Έξω · ανέφικτος','bad')}</p>`;}
+  $('#kpres').innerHTML=h+'<p class="muted" style="font-size:12.5px;margin:8px 0 0">Πάτα πάνω στο διάγραμμα για να μετακινήσεις το σημείο.</p>';
+  // sacrifice
+  const a=K.fa,b=K.fb,lo=Math.min(a,b),hi=Math.max(a,b),Lx=t[t.length-1][0];
+  if(!(lo>=0&&hi<=Lx)||a===b){$('#kfres').innerHTML=`<p class="muted">Δώσε δύο διαφορετικά Χ από 0 έως ${fmt(Lx)}.</p>`;}
+  else{let rows=[],tot=0;for(let i=0;i<k.length;i++){const s0=Math.max(lo,t[i][0]),s1=Math.min(hi,t[i+1][0]);if(s1>s0+1e-9){const v=k[i]*(s1-s0);tot+=v;rows.push(`<tr><td>${fmt(s0)} → ${fmt(s1)}</td><td class="l">${segName(i)}</td><td>${fmt(k[i])}</td><td>${fmt(k[i])}·${fmt(s1-s0)} = <b>${fmt(v)}</b></td></tr>`);}}
+    const ya=psiMax(t,lo).val,yb=psiMax(t,hi).val;
+    $('#kfres').innerHTML=`<div class="tbl-wrap"><table class="t"><tr><th>Διαδρομή</th><th>Τμήμα</th><th>ΚΕ<sub>Χ</sub></th><th>Θυσία Ψ</th></tr>${rows.join('')}<tr><td colspan="3" style="text-align:right"><b>Σύνολο</b></td><td><b class="hl">${fmt(tot)}</b></td></tr></table></div>
+    <p class="math" style="margin:8px 0 0">Επαλήθευση: Ψ(${fmt(lo)}) − Ψ(${fmt(hi)}) = ${fmt(ya)} − ${fmt(yb)} = ${fmt(ya-yb)} ✔</p>
+    ${a>b?'<p class="muted" style="font-size:13px">Μειώνεις το Χ, άρα <b>κερδίζεις</b> αυτές τις μονάδες Ψ αντί να τις θυσιάζεις.</p>':''}`;}
+}
+$('#kpresets').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b)setPreset(b.dataset.k);});
+$('#ktable').addEventListener('input',e=>{const el=e.target;if(el.tagName!=='INPUT')return;const v=parseNum(el.value);if(isNaN(v))return;K.t[+el.dataset.i][+el.dataset.c]=v;K.key='';renderK(false);});
+['kpx','kpy'].forEach((id,j)=>$('#'+id).addEventListener('input',e=>{const v=parseNum(e.target.value);if(!isNaN(v)){K.pt[j]=v;renderK(false);}}));
+$('#kfa').addEventListener('input',e=>{const v=parseNum(e.target.value);if(!isNaN(v)){K.fa=v;renderK(false);}});
+$('#kfb').addEventListener('input',e=>{const v=parseNum(e.target.value);if(!isNaN(v)){K.fb=v;renderK(false);}});
+$('#kshift').addEventListener('change',e=>{K.shift=e.target.checked;renderK(false);});
+$('#kchart').addEventListener('click',e=>{stopTravel();const svg=$('#kchart svg');if(!svg)return;const d=JSON.parse($('#kchart').dataset.f);const r=svg.getBoundingClientRect();const fx=frame(d.W,d.H,d.pad,d.xm,d.ym);
+  const X=fx.ix((e.clientX-r.left)*d.W/r.width),Y=fx.iy((e.clientY-r.top)*d.H/r.height);if(X<0||Y<0)return;
+  K.pt=[Math.round(X),Math.round(Y)];$('#kpx').value=K.pt[0];$('#kpy').value=K.pt[1];renderK(false);});
+
+/* ---------- DEMAND LAB ---------- */
+let D={mode:'lin',a:100,b:-5,P1:8,P2:12,A:1200};let sweep=null;
+function stopSweep(){if(sweep){cancelAnimationFrame(sweep);sweep=null;}const b=$('#dsweep');if(b){b.textContent='▶ Κίνησε την τιμή';b.classList.remove('playing');}}
+function animateD(target){stopSweep();if((target.mode||'lin')!==D.mode){Object.assign(D,target);buildSliders();bindSliders();animD=true;renderD();return;}
+  const F={a:D.a,b:D.b,P1:D.P1,P2:D.P2,A:D.A};
+  tween(700,u=>{['a','b','P1','P2','A'].forEach(k=>{if(target[k]!==undefined)D[k]=F[k]+(target[k]-F[k])*u;});renderD();},()=>{Object.assign(D,target);buildSliders();bindSliders();renderD();});}
+const DM={lin:'Γραμμική Q = α + βP',hyp:'Ισοσκελής υπερβολή Q = A/P'};
+function sdSVG(D){
+  const lin=D.mode==='lin',W=520,H=230,pad={l:58,r:20,t:18,b:34};
+  const Pmax=lin?-D.a/D.b:Math.max(D.P1,D.P2)*2.2;const SD=P=>lin?P*(D.a+D.b*P):D.A;
+  const top=lin?D.a*D.a/(-4*D.b):D.A;const f=frame(W,H,pad,Pmax*1.04,top*1.25);
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Συνολική δαπάνη ως προς την τιμή">`+axes(f,Pmax*1.04,top*1.25,'P','ΣΔ');
+  let d='',ar='';const N=60,p0=lin?0:Pmax*0.08;for(let i=0;i<=N;i++){const P=p0+(Pmax-p0)*i/N;d+=(i?'L':'M')+f.x(P)+','+f.y(SD(P));}
+  ar=d+`L${f.x(Pmax)},${f.y(0)}L${f.x(p0)},${f.y(0)}Z`;
+  s+=`<path d="${ar}" fill="var(--c2-fill)"/><path d="${d}" fill="none" stroke="var(--c2)" stroke-width="2.6"/>`;
+  if(lin){const pm=Pmax/2;s+=`<line x1="${f.x(pm)}" y1="${f.y(0)}" x2="${f.x(pm)}" y2="${f.y(top)}" stroke="var(--bad)" stroke-dasharray="4 4"/><text x="${f.x(pm)}" y="${f.y(top)-8}" text-anchor="middle" style="fill:var(--bad);font-weight:700">max ΣΔ = ${fmt(top)} στο P = ${fmt(pm)}</text>`;}
+  [[D.P1,'Α'],[D.P2,'Β']].forEach(([P,n])=>{s+=`<circle cx="${f.x(P)}" cy="${f.y(SD(P))}" r="6" fill="var(--fg)" stroke="var(--c2)" stroke-width="2"/><text x="${f.x(P)+9}" y="${f.y(SD(P))+16}" style="fill:var(--fg);font-weight:700">${n}</text>`;});
+  return s+'</svg>';
+}
+function sliderHTML(id,label,min,max,step,val){return `<div class="slider"><label for="${id}">${label}</label><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"><output id="${id}o">${fmt(val)}</output></div>`;}
+function buildSliders(){
+  const lin=D.mode==='lin';
+  const Pmax=lin?-D.a/D.b:60;
+  D.P1=Math.min(D.P1,Pmax*0.98);D.P2=Math.min(D.P2,Pmax*0.98);
+  $('#dsliders').innerHTML=`<div class="lbl">Ρυθμίσεις</div>`+(lin?sliderHTML('sa','α (σταθερά)',20,400,10,D.a)+sliderHTML('sb','β (κλίση)',-20,-1,0.5,D.b):sliderHTML('sA','A (= ΣΔ)',200,3000,100,D.A))+
+    sliderHTML('sp1','P₁ (αρχική)',lin?0.5:1,Math.floor(Pmax*0.98*2)/2,0.5,D.P1)+sliderHTML('sp2','P₂ (νέα)',lin?0.5:1,Math.floor(Pmax*0.98*2)/2,0.5,D.P2)+
+    `<div class="row"><button class="btn sm" data-ex="l3">Λυμένο 3</button><button class="btn sm" data-ex="a8">Άσκηση 8</button><button class="btn sm" data-ex="a14">Άσκηση 14</button></div>`;
+}
+function renderD(){
+  const lin=D.mode==='lin';
+  $('#dmode').innerHTML=Object.entries(DM).map(([k,v])=>`<button class="chip ${D.mode===k?'on':''}" data-m="${k}">${v}</button>`).join('');
+  $('#dtitle').textContent=lin?`Q = ${fmt(D.a)} − ${fmt(-D.b)}P`:`Q = ${fmt(D.A)} / P`;
+  $('#dchart').innerHTML=demandSVG(D,{anim:animD,pulse:!sweep});animD=false;$('#dsd').innerHTML=sdSVG(D);
+  const Q=P=>lin?D.a+D.b*P:D.A/P;
+  const P1=D.P1,P2=D.P2,Q1=Q(P1),Q2=Q(P2),dQ=Q2-Q1,dP=P2-P1;
+  const S1=P1*Q1,S2=P2*Q2;
+  if(Math.abs(dP)<1e-9){$('#dres').innerHTML='<p class="muted">Βάλε διαφορετική P₂ από την P₁ για να δεις ελαστικότητα.</p>';$('#dsteps').innerHTML='';return;}
+  const Ep=dQ/dP*P1/Q1, Ea=dQ/dP*(P1+P2)/(Q1+Q2);
+  const dir=S2>S1+1e-9?'αυξάνεται':S2<S1-1e-9?'μειώνεται':'μένει σταθερή';
+  $('#dres').innerHTML=`<div class="lbl" style="margin-bottom:8px">Αποτελέσματα</div>
+    <div class="tbl-wrap"><table class="t"><tr><th></th><th>P</th><th>Q</th><th>ΣΔ = P·Q</th></tr>
+    <tr><td class="l">Α</td><td>${fmt(P1)}</td><td>${fmt(Q1)}</td><td>${fmt(S1)}</td></tr>
+    <tr><td class="l">Β</td><td>${fmt(P2)}</td><td>${fmt(Q2)}</td><td>${fmt(S2)}</td></tr></table></div>
+    <div class="g2" style="gap:10px;margin-top:10px">
+      <div class="tile"><div class="lbl">E σημείου (από Α)</div><div class="v">${fmt(Ep)}</div><div>${verdict(charD(Ep),Math.abs(Ep)>1?'gold':'ok')}</div></div>
+      <div class="tile"><div class="lbl">E τόξου ΑΒ</div><div class="v">${fmt(Ea)}</div><div>${verdict(charD(Ea),Math.abs(Ea)>1?'gold':'ok')}</div></div>
+    </div>
+    <p style="margin:10px 0 0">Η ΣΔ <b>${dir}</b> (${fmt(S1)} → ${fmt(S2)}, ${S1?fmt((S2/S1-1)*100):'—'}%).</p>`;
+  const ch=charD(Ea);
+  const why=ch==='μοναδιαία'?'Με |E| = 1 η ΣΔ μένει σταθερή.':ch==='ελαστική'?`Ελαστική ζήτηση: η ΣΔ κινείται <b>αντίθετα</b> από την τιμή. Η τιμή ${dP>0?'ανέβηκε':'έπεσε'}, άρα η ΣΔ ${dP>0?'πέφτει':'ανεβαίνει'}.`:`Ανελαστική ζήτηση: η ΣΔ κινείται <b>μαζί</b> με την τιμή. Η τιμή ${dP>0?'ανέβηκε':'έπεσε'}, άρα και η ΣΔ ${dP>0?'ανεβαίνει':'πέφτει'}.`;
+  $('#dsteps').innerHTML=`<h3>Η λύση γραμμένη, βήμα-βήμα</h3><ol class="steps math">
+    <li><span>Ποσότητες: Q₁ = ${lin?`${fmt(D.a)} ${D.b<0?'−':'+'} ${fmt(Math.abs(D.b))}·${fmt(P1)}`:`${fmt(D.A)}/${fmt(P1)}`} = <b>${fmt(Q1)}</b> · Q₂ = ${lin?`${fmt(D.a)} − ${fmt(Math.abs(D.b))}·${fmt(P2)}`:`${fmt(D.A)}/${fmt(P2)}`} = <b>${fmt(Q2)}</b></span></li>
+    <li><span>E<sub>σημ</sub> = ${fr(`${fmt(Q2)} − ${fmt(Q1)}`,`${fmt(P2)} − ${fmt(P1)}`)}·${fr(fmt(P1),fmt(Q1))} = ${par(dQ/dP)}·${fmt(P1/Q1,3)} = <b class="hl">${fmt(Ep)}</b></span></li>
+    <li><span>E<sub>τόξου</sub> = ${par(dQ/dP)}·${fr(`${fmt(P1)} + ${fmt(P2)}`,`${fmt(Q1)} + ${fmt(Q2)}`)} = ${par(dQ/dP)}·${fmt((P1+P2)/(Q1+Q2),3)} = <b class="hl">${fmt(Ea)}</b></span></li>
+    <li><span>ΣΔ₁ = ${fmt(P1)}·${fmt(Q1)} = ${fmt(S1)} → ΣΔ₂ = ${fmt(P2)}·${fmt(Q2)} = ${fmt(S2)}</span></li></ol>
+    <div class="tip" style="margin-top:10px">${why}${lin?` Στη γραμμική το ΔQ/ΔP = β = ${fmt(D.b)} πάντα.`:''}</div>`;
+}
+function bindSliders(){
+  $('#dsliders').oninput=e=>{const el=e.target;if(el.type!=='range')return;stopSweep();const v=parseFloat(el.value);$('#'+el.id+'o').textContent=fmt(v);
+    if(el.id==='sa'||el.id==='sb'){D[el.id==='sa'?'a':'b']=v;const mx=Math.floor(-D.a/D.b*0.98*2)/2;['sp1','sp2'].forEach((id,j)=>{const r=$('#'+id);r.max=mx;const key=j?'P2':'P1';if(D[key]>mx){D[key]=mx;}r.value=D[key];$('#'+id+'o').textContent=fmt(D[key]);});}
+    if(el.id==='sA')D.A=v; if(el.id==='sp1')D.P1=v; if(el.id==='sp2')D.P2=v; renderD();};
+  $('#dsliders').onclick=e=>{const b=e.target.closest('[data-ex]');if(!b)return;const ex={l3:{mode:'lin',a:100,b:-5,P1:8,P2:12},a8:{mode:'lin',a:120,b:-4,P1:10,P2:15},a14:{mode:'lin',a:60,b:-2,P1:10,P2:20}}[b.dataset.ex];animateD(ex);};
+}
+$('#dmode').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;stopSweep();D.mode=b.dataset.m;if(D.mode==='hyp'){D.P1=10;D.P2=20;D.A=600;}else{Object.assign(D,{a:100,b:-5,P1:8,P2:12});}buildSliders();bindSliders();animD=true;renderD();});
+$('#dsweep').addEventListener('click',()=>{if(sweep){stopSweep();renderD();return;}const b=$('#dsweep');b.textContent='■ Σταμάτα';b.classList.add('playing');const lin=D.mode==='lin';const Pmax=lin?-D.a/D.b:Math.max(D.P1,D.P2)*2;const lo=lin?Pmax*0.04:Pmax*0.15,hi=Pmax*0.96,t0=performance.now(),dur=7000;
+  const f=now=>{const u=((now-t0)%dur)/dur;const w=u<.5?u*2:2-u*2;D.P2=Math.round((lo+(hi-lo)*w)*10)/10;const r=$('#sp2');if(r){r.value=D.P2;$('#sp2o').textContent=fmt(D.P2);}renderD();sweep=requestAnimationFrame(f);};sweep=requestAnimationFrame(f);});
+function renderEY(){
+  const Y1=parseNum($('#ey1').value),Y2=parseNum($('#ey2').value),Q1=parseNum($('#eq1').value),Q2=parseNum($('#eq2').value);
+  if([Y1,Y2,Q1,Q2].some(isNaN)||Y1===Y2||!Q1){$('#eyres').innerHTML='<p class="muted">Συμπλήρωσε όλα τα πεδία, με Y₁ ≠ Y₂.</p>';$('#eychart').innerHTML='';return;}
+  const E=(Q2-Q1)/(Y2-Y1)*Y1/Q1;
+  const kind=E>0?'κανονικό':E<0?'κατώτερο':'ουδέτερο';
+  const rightShift=(Q2-Q1)*(Y2-Y1)>0;
+  $('#eyres').innerHTML=`<ol class="steps math"><li><span>E<sub>Y</sub> = ${fr(`${fmt(Q2)} − ${fmt(Q1)}`,`${fmt(Y2)} − ${fmt(Y1)}`)}·${fr(fmt(Y1),fmt(Q1))} = <b class="hl">${fmt(E)}</b></span></li>
+    <li><span>${E>0?'E<sub>Y</sub> &gt; 0':'E<sub>Y</sub> &lt; 0'} ⇒ ${verdict(kind+' αγαθό',E>0?'ok':'bad')}</span></li></ol>`;
+  const W=460,H=230,pad={l:40,r:18,t:16,b:28},f=frame(W,H,pad,100,20);
+  const sh=Math.max(-30,Math.min(30,(Q2-Q1)/Q1*50));
+  const DF=mkdefs();
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Μετατόπιση ζήτησης">${DF.d}`+axes(f,100,20,'Q','P');
+  s+=`<line x1="${f.x(10)}" y1="${f.y(18)}" x2="${f.x(60)}" y2="${f.y(2)}" stroke="var(--c2-2)" stroke-width="2.4"/><text x="${f.x(60)+4}" y="${f.y(2)}">D₁</text>`;
+  s+=`<line x1="${f.x(10+sh)}" y1="${f.y(18)}" x2="${f.x(60+sh)}" y2="${f.y(2)}" stroke="var(--c2)" stroke-width="2.6" stroke-dasharray="7 4"/><text x="${f.x(60+sh)+4}" y="${f.y(2)}" style="fill:var(--c2);font-weight:700">D₂</text>`;
+  s+=`<line x1="${f.x(35)}" y1="${f.y(10)}" x2="${f.x(35+sh*0.85)}" y2="${f.y(10)}" style="stroke:var(--fg)" stroke-width="1.6" marker-end="url(#${DF.a})"/>`;
+  s+=`<text x="${f.x(62)}" y="${f.y(16)}" style="fill:var(--fg)">Y ${Y2>Y1?'↑':'↓'} ⇒ καμπύλη ${rightShift?'δεξιά':'αριστερά'}</text></svg>`;
+  $('#eychart').innerHTML=s;
+}
+['ey1','ey2','eq1','eq2'].forEach(id=>$('#'+id).addEventListener('input',renderEY));
+
+/* ---------- WORKED EXAMPLES ---------- */
+const WK=[
+ {n:'ΛΥΜΕΝΟ 1',ch:'Κεφ. 1',t:'Κόστος ευκαιρίας & θέση συνδυασμών',
+  q:'Πίνακας ΚΠΔ: Α(0,100), Β(10,90), Γ(20,70), Δ(30,40), Ε(40,0). <b>α)</b> ΚΕ<sub>Χ</sub> και ΚΕ<sub>Ψ</sub>. <b>β)</b> Αυξανόμενο; <b>γ)</b> Πού είναι τα Κ(15,85), Λ(25,50), Μ(35,20);',
+  side:()=>kpdSVG([[0,100],[10,90],[20,70],[30,40],[40,0]],{W:320,H:260,noLabels:true,points:[{x:15,y:85,label:'Κ'},{x:25,y:50,label:'Λ'},{x:35,y:20,label:'Μ'}]}).svg,
+  s:['ΚΕ<sub>Χ</sub> = ΔΨ/ΔΧ ανά τμήμα: Α→Β 10/10 = <b>1</b> · Β→Γ 20/10 = <b>2</b> · Γ→Δ 30/10 = <b>3</b> · Δ→Ε 40/10 = <b>4</b>',
+     'ΚΕ<sub>Ψ</sub> = 1/ΚΕ<sub>Χ</sub>: 1 · 0,5 · 0,33 · 0,25',
+     'Αυξανόμενο (1 → 2 → 3 → 4): οι συντελεστές δεν είναι εξίσου κατάλληλοι για τα δύο αγαθά.',
+     'Κ(15,85): τμήμα Β→Γ, Ψ<sub>max</sub> = 90 − 2·5 = 80. Αφού 85 &gt; 80 ⇒ <b style="color:var(--bad)">ανέφικτο</b>',
+     'Λ(25,50): τμήμα Γ→Δ, Ψ<sub>max</sub> = 70 − 3·5 = 55. Αφού 50 &lt; 55 ⇒ <b style="color:var(--ok)">μέσα, υποαπασχόληση</b>',
+     'Μ(35,20): τμήμα Δ→Ε, Ψ<sub>max</sub> = 40 − 4·5 = 20. Αφού 20 = 20 ⇒ <b>πάνω στην ΚΠΔ</b>'],lab:['kpd','l1']},
+ {n:'ΛΥΜΕΝΟ 2',ch:'Κεφ. 1',t:'Θυσία για πολλές μονάδες',
+  q:'Με τον ίδιο πίνακα: από Χ = 15 σε Χ = 35, πόσα Ψ θυσιάζονται;',
+  s:['Σπάμε τη διαδρομή σε τμήματα: 15→20 (ΚΕ 2), 20→30 (ΚΕ 3), 30→35 (ΚΕ 4).','Θυσίες: 2·5 = 10 · 3·10 = 30 · 4·5 = 20','Σύνολο = 10 + 30 + 20 = <b class="hl">60</b>','Επαλήθευση: Ψ(15) = 80, Ψ(35) = 20, διαφορά 60 ✔'],lab:['kpd','l1']},
+ {n:'ΛΥΜΕΝΟ 3',ch:'Κεφ. 2',t:'Συνάρτηση → πίνακας → ελαστικότητες → ΣΔ',
+  q:'Q<sub>D</sub> = 100 − 5P. <b>α)</b> Πίνακας για P = 4, 8, 12, 16. <b>β)</b> E<sub>D</sub> από 8 σε 12. <b>γ)</b> Τόξου 12↔16. <b>δ)</b> ΣΔ από 12 σε 16;',
+  side:()=>demandSVG({mode:'lin',a:100,b:-5,P1:12,P2:16},{W:320,H:270}),
+  s:['Q: P=4 → 80 · P=8 → 60 · P=12 → 40 · P=16 → 20',
+     `E<sub>D</sub> = ${fr('40 − 60','12 − 8')}·${fr('8','60')} = (−5)·0,133 = <b class="hl">−0,67</b> ⇒ ανελαστική`,
+     `E<sub>τ</sub> = (−5)·${fr('12 + 16','40 + 20')} = (−5)·${fr('28','60')} = <b class="hl">−2,33</b> ⇒ ελαστική`,
+     'ΣΔ: 12·40 = 480 → 16·20 = 320 ⇒ μειώνεται. Ελαστική: η ΣΔ πάει αντίθετα από την τιμή ✔'],lab:['dem','l3']},
+ {n:'ΛΥΜΕΝΟ 4',ch:'Κεφ. 2',t:'Γραμμική από δύο σημεία',
+  q:'P = 10 → Q = 50 και P = 14 → Q = 30. Βρες τη συνάρτηση.',
+  s:[`β = ${fr('30 − 50','14 − 10')} = ${fr('−20','4')} = <b>−5</b>`,'Από (10, 50): 50 = α − 5·10 ⇒ α = <b>100</b>','<b class="hl">Q = 100 − 5P</b> · Έλεγχος: 100 − 70 = 30 ✔']},
+ {n:'ΛΥΜΕΝΟ 5',ch:'Κεφ. 2',t:'Ποσοστά & ΣΔ',
+  q:'E<sub>D</sub> = −0,5 και η τιμή αυξάνεται 20%. Πόσο αλλάζουν Q και ΣΔ;',
+  s:['%ΔQ = E·%ΔP = (−0,5)·20% = <b>−10%</b>','ΣΔ₂ = (1,2·P₁)·(0,9·Q₁) = 1,08·ΣΔ₁','Η ΣΔ <b class="hl">αυξάνεται 8%</b>, όχι 10%: τα ποσοστά πολλαπλασιάζονται.']},
+ {n:'ΛΥΜΕΝΟ 6',ch:'Κεφ. 2',t:'Νέα ποσότητα από ελαστικότητα',
+  q:'P₁ = 100 €, Q₁ = 5.000 κιλά, E<sub>D</sub> = −0,5. Η τιμή γίνεται 120 €. Νέα Q και έσοδα;',
+  s:[`−0,5 = ${fr('Q₂ − 5.000','120 − 100')}·${fr('100','5.000')} = ${fr('Q₂ − 5.000','1.000')}`,'Q₂ − 5.000 = −500 ⇒ <b class="hl">Q₂ = 4.500</b>','ΣΔ: 500.000 € → 540.000 € ⇒ τα έσοδα αυξάνονται (ανελαστική).']},
+ {n:'ΛΥΜΕΝΟ 7',ch:'Κεφ. 2',t:'Εισοδηματική ελαστικότητα',
+  q:'Y: 1.000 → 1.200 €, Q: 40 → 50 (σταθερή τιμή). E<sub>Y</sub>; Τι αγαθό; Αν Y +10%;',
+  s:[`E<sub>Y</sub> = ${fr('50 − 40','1.200 − 1.000')}·${fr('1.000','40')} = 0,05·25 = <b class="hl">1,25</b>`,'E<sub>Y</sub> &gt; 0 ⇒ <b>κανονικό</b>','%ΔQ = 1,25·10% = <b>12,5%</b>'],lab:['ey']}
+];
+function renderWK(){
+  $('#wklist').innerHTML=WK.map((w,i)=>`<article class="wk" id="wk${i}"><div class="hd"><span class="n">${w.n} · ${w.ch}</span><h3>${w.t}</h3><div class="acts"><button class="btn sm solid" data-a="next">Επόμενο βήμα</button><button class="btn sm" data-a="all">Όλα</button>${w.lab?`<button class="btn sm" data-a="lab">Στο εργαστήριο</button>`:''}</div></div>
+   <div class="bd ${w.side?'':'full'}"><div><p class="q">${w.q}</p><div class="sol"><div class="lbl" style="margin-bottom:8px">Λύση · <span data-c>0</span>/${w.s.length}</div><ol class="steps math">${w.s.map(x=>`<li class="hide"><span>${x}</span></li>`).join('')}</ol></div></div>${w.side?`<div class="side">${w.side()}</div>`:''}</div></article>`).join('');
+  $$('#wklist .side svg').forEach(s=>s.style.cursor='default');
+}
+$('#wklist').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const art=b.closest('.wk'),i=+art.id.slice(2),hid=$$('li.hide',art);
+  if(b.dataset.a==='next'&&hid.length)hid[0].classList.remove('hide');
+  if(b.dataset.a==='all')hid.forEach(l=>l.classList.remove('hide'));
+  if(b.dataset.a==='lab'){const L=WK[i].lab;if(L[0]==='kpd'){setPreset(L[1],true);location.hash='#kpd-lab';}else if(L[0]==='dem'){stopSweep();Object.assign(D,{mode:'lin',a:100,b:-5,P1:12,P2:16});buildSliders();bindSliders();location.hash='#demand-lab';}else{location.hash='#demand-lab';}}
+  $('[data-c]',art).textContent=$$('.steps li:not(.hide)',art).length;});
+
+/* ---------- EXERCISES (PDF) ---------- */
+const tb=(h,rows)=>`<div class="tbl-wrap" style="max-width:420px"><table class="t"><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map((c,j)=>`<td${j===0&&typeof c==='string'&&/^[Α-Ω]$/.test(c)?' class="l"':''}>${c}</td>`).join('')}</tr>`).join('')}</table></div>`;
+const EX=[
+ {n:1,ch:1,st:1,t:'Υπολογίζω κόστος ευκαιρίας',q:'Πίνακας ΚΠΔ:'+tb(['','Χ','Ψ'],[['Α',0,60],['Β',10,55],['Γ',20,45],['Δ',30,30],['Ε',40,0]])+'<ol type="α"><li>ΚΕ<sub>Χ</sub> για όλους τους διαδοχικούς συνδυασμούς.</li><li>ΚΕ<sub>Ψ</sub>.</li><li>Είναι αυξανόμενο; Γιατί;</li><li>Σχεδίασε την ΚΠΔ.</li></ol>',
+  s:'ΚΕ<sub>Χ</sub>: 5/10 = <b>0,5</b> · 10/10 = <b>1</b> · 15/10 = <b>1,5</b> · 30/10 = <b>3</b>. ΚΕ<sub>Ψ</sub>: 2 · 1 · 0,67 · 0,33. Αυξανόμενο: οι συντελεστές δεν είναι εξίσου κατάλληλοι. Κοίλη καμπύλη από (0,60) σε (40,0).',lab:'a1'},
+ {n:2,ch:1,st:2,t:'Εφικτό, ανέφικτο ή άριστο;',q:'Με τα δεδομένα της Άσκησης 1: i) (15, 52) ii) (25, 35) iii) (35, 15)',
+  s:'i) Ψ<sub>max</sub> = 55 − 1·5 = 50 &lt; 52 ⇒ <b style="color:var(--bad)">ανέφικτο</b>. ii) Ψ<sub>max</sub> = 45 − 1,5·5 = 37,5 &gt; 35 ⇒ <b style="color:var(--ok)">μέσα</b>. iii) Ψ<sub>max</sub> = 30 − 3·5 = 15 ⇒ <b>πάνω στην ΚΠΔ</b>.',lab:'a1'},
+ {n:3,ch:1,st:2,t:'Συμπληρώνω τον πίνακα',q:tb(['','Χ','Ψ','ΚΕ<sub>Χ</sub>'],[['Α',0,200,'0,5 (Α→Β)'],['Β',20,'<b style="color:var(--bad)">;</b>','; (Β→Γ)'],['Γ',40,160,'3 (Γ→Δ)'],['Δ',60,'<b style="color:var(--bad)">;</b>','; (Δ→Ε)'],['Ε',80,0,'']])+'Συμπλήρωσε τα κενά και βρες όλα τα ΚΕ<sub>Ψ</sub>.',
+  s:'Ψ<sub>Β</sub> = 200 − 0,5·20 = <b>190</b> · ΚΕ(Β→Γ) = 30/20 = <b>1,5</b> · Ψ<sub>Δ</sub> = 160 − 3·20 = <b>100</b> · ΚΕ(Δ→Ε) = 100/20 = <b>5</b>. ΚΕ<sub>Ψ</sub>: 2 · 0,67 · 0,33 · 0,2.',lab:'a3'},
+ {n:4,ch:1,st:2,t:'Πόσα θυσιάζω;',q:'Με τον πίνακα της Άσκ. 3: <ol type="α"><li>Ψ<sub>max</sub> για Χ = 30 και Χ = 50.</li><li>Θυσία Ψ από Χ = 30 σε Χ = 50.</li><li>Ψ<sub>max</sub> για Χ = 70.</li></ol>',
+  s:'α) 190 − 1,5·10 = <b>175</b> · 160 − 3·10 = <b>130</b>. β) 1,5·10 + 3·10 = <b>45</b> ✔ (175 − 130). γ) 100 − 5·10 = <b>50</b>.',lab:'a3'},
+ {n:5,ch:1,st:1,t:'Τι παθαίνει η ΚΠΔ;',q:'α) σεισμός καταστρέφει εργοστάσια β) νέα τεχνολογία και στα δύο γ) αύξηση ανεργίας δ) νέα τεχνολογία μόνο στο Χ ε) έρχονται νέοι εργαζόμενοι',
+  s:'α) αριστερά · β) δεξιά · γ) δεν μετατοπίζεται, το σημείο πάει μέσα · δ) «ανοίγει» μόνο στον άξονα Χ · ε) δεξιά.'},
+ {n:6,ch:1,st:1,t:'Κόστος ευκαιρίας στη ζωή',q:'Η Μαρία έχει 3 ώρες: σινεμά (8 €) ή δουλειά 10 €/ώρα. Τι θυσιάζει αν πάει σινεμά; Τι είναι κόστος ευκαιρίας; Σχέση με το χρηματικό κόστος;',
+  s:'Θυσιάζει 30 € από τη δουλειά συν το εισιτήριο, όχι μόνο τα 8 €. Κόστος ευκαιρίας: τα άλλα αγαθά που θυσιάζονται. Το χρηματικό κόστος είναι το πραγματικό κόστος εκφρασμένο σε χρήμα.'},
+ {n:7,ch:1,st:2,t:'Ευθεία ΚΠΔ',q:tb(['','Χ','Ψ'],[['Α',0,120],['Β',10,90],['Γ',20,60],['Δ',30,30],['Ε',40,0]])+'α) ΚΕ<sub>Χ</sub> β) Τι σχήμα έχει; γ) Ψ<sub>max</sub> για Χ = 25',
+  s:'ΚΕ<sub>Χ</sub> = 3 παντού ⇒ <b>σταθερό</b> ⇒ ευθεία. Ψ<sub>max</sub> = 60 − 3·5 = <b>45</b>.',lab:'a7'},
+ {n:8,ch:2,st:1,t:'Από τη συνάρτηση σε όλα',q:'Q = 120 − 4P. α) πίνακας για P = 5…25 και ΣΔ β) E από 10 σε 15 γ) τόξου 20↔25 δ) E στο P = 15',
+  s:'Q: 100, 80, 60, 40, 20 · ΣΔ: 500, 800, <b>900</b>, 800, 500. β) (−4)·10/80 = <b>−0,5</b> ανελαστική. γ) (−4)·45/60 = <b>−3</b> ελαστική. δ) (−4)·15/60 = <b>−1</b>: το μέσο, εκεί η ΣΔ μέγιστη.',dem:{a:120,b:-4,P1:10,P2:15}},
+ {n:9,ch:2,st:1,t:'Βρίσκω τη συνάρτηση',q:'P = 6 → Q = 70, P = 10 → Q = 50. α) συνάρτηση β) Q στο P = 12 γ) πότε Q = 0;',
+  s:'β = −20/4 = −5, α = 70 + 30 = 100 ⇒ <b>Q = 100 − 5P</b>. Q(12) = <b>40</b>. Q = 0 ⇒ <b>P = 20</b>.',dem:{a:100,b:-5,P1:6,P2:10}},
+ {n:10,ch:2,st:2,t:'Αύξηση τιμής 10%',q:'P₁ = 20, Q₁ = 300, E = −1,5, τιμή +10%. α) P₂ β) %ΔQ, Q₂ γ) ΣΔ πριν/μετά',
+  s:'P₂ = <b>22</b>. %ΔQ = −15% ⇒ Q₂ = <b>255</b>. ΣΔ: 6.000 → 5.610 ⇒ μειώνεται (ελαστική).'},
+ {n:11,ch:2,st:2,t:'Συμφέρει η αύξηση;',q:'1.000 μονάδες στα 50 €, E = −0,5. Νέα τιμή 60 €. α) νέα Q β) έσοδα;',
+  s:'%ΔP = 20% ⇒ %ΔQ = −10% ⇒ Q₂ = <b>900</b>. Έσοδα: 50.000 → <b>54.000</b> ⇒ αυξάνονται.'},
+ {n:12,ch:2,st:1,t:'Κανονικό ή κατώτερο;',q:tb(['Y','Q<sub>Α</sub>','Q<sub>Β</sub>'],[[800,20,50],['1.000',25,45]])+'α) E<sub>Y</sub> για κάθε αγαθό β) χαρακτηρισμός γ) μετατόπιση;',
+  s:'E<sub>Y,Α</sub> = (5/200)·(800/20) = <b>1</b> κανονικό, καμπύλη δεξιά. E<sub>Y,Β</sub> = (−5/200)·(800/50) = <b>−0,4</b> κατώτερο, καμπύλη αριστερά.'},
+ {n:13,ch:2,st:1,t:'Ισοσκελής υπερβολή',q:'Q = 600/P. α) Q για P = 10, 20, 30 β) ΣΔ γ) τόξου 10↔20',
+  s:'Q: 60, 30, 20 · ΣΔ = 600 σταθερή · E<sub>τ</sub> = (−3)·30/90 = <b>−1</b>.',hyp:true},
+ {n:14,ch:2,st:3,t:'Μπόνους Πανελλαδικών',q:'Γραμμική, P₁ = 10, Q₁ = 40, E = −0,5. α) συνάρτηση β) Q στο P = 20 γ) τόξου 10↔20 δ) ΣΔ;',
+  s:'−0,5 = β·10/40 ⇒ β = −2, α = 60 ⇒ <b>Q = 60 − 2P</b>. Q(20) = 20. E<sub>τ</sub> = (−2)·30/60 = <b>−1</b>. ΣΔ: 400 → 400 σταθερή.',dem:{a:60,b:-2,P1:10,P2:20}},
+ {n:15,ch:1,st:2,nw:1,t:'ΚΠΔ με «άβολα» νούμερα',q:tb(['','Χ','Ψ'],[['Α',0,50],['Β',5,48],['Γ',10,42],['Δ',15,30],['Ε',20,0]])+'<ol type="α"><li>ΚΕ<sub>Χ</sub> για όλα τα τμήματα.</li><li>Πού βρίσκεται ο συνδυασμός (12, 38);</li><li>Πόσα Ψ θυσιάζονται από Χ = 5 σε Χ = 15;</li></ol>',
+  s:'α) 2/5 = <b>0,4</b> · 6/5 = <b>1,2</b> · 12/5 = <b>2,4</b> · 30/5 = <b>6</b>. β) Τμήμα Γ→Δ: Ψ<sub>max</sub> = 42 − 2,4·2 = 37,2. Αφού 38 &gt; 37,2 ⇒ <b style="color:var(--bad)">ανέφικτος</b> (παρά τρίχα!). γ) 1,2·5 + 2,4·5 = <b>18</b> ✔ (48 − 30).',lab:'n15'},
+ {n:16,ch:1,st:1,nw:1,t:'Μετακινούμαι με το ΚΕ',q:'Η οικονομία παράγει Χ = 20 και Ψ = 40, πάνω στην ΚΠΔ. <ol type="α"><li>Θέλει 10 μονάδες Χ ακόμα και το ΚΕ<sub>Χ</sub> σε αυτό το τμήμα είναι 3. Πόσο Ψ θα της μείνει;</li><li>Αν αντί γι\' αυτό θέλει 20 μονάδες Ψ ακόμα και το ΚΕ<sub>Ψ</sub> είναι 0,5, πόσες μονάδες Χ θα θυσιάσει;</li></ol>',
+  s:'α) Θυσία Ψ = 3·10 = 30 ⇒ Ψ = 40 − 30 = <b>10</b>. β) Θυσία Χ = ΚΕ<sub>Ψ</sub>·ΔΨ = 0,5·20 = <b>10</b> ⇒ Χ = 20 − 10 = 10.'},
+ {n:17,ch:1,st:1,nw:1,t:'Θεωρία με λόγια',q:'<ol type="α"><li>Γιατί η ΚΠΔ έχει αρνητική κλίση;</li><li>Γιατί είναι κοίλη ως προς την αρχή των αξόνων;</li><li>Τι σημαίνει ότι «το χρηματικό κόστος είναι το πραγματικό κόστος εκφρασμένο σε χρήμα»;</li></ol>',
+  s:'α) Οι συντελεστές είναι δεδομένοι (στενότητα): για να παραχθεί περισσότερο Χ πρέπει να θυσιαστεί Ψ. β) Αυξανόμενο κόστος ευκαιρίας: οι συντελεστές δεν είναι εξίσου κατάλληλοι για όλα τα αγαθά. γ) Τα ευρώ που πληρώνουμε αντιπροσωπεύουν τα άλλα αγαθά που θα μπορούσαμε να αγοράσουμε στη θέση του.'},
+ {n:18,ch:2,st:1,nw:1,t:'Από πίνακα σε συνάρτηση',q:tb(['P','Q'],[[2,90],[4,80],[6,70],[8,60],[10,50]])+'<ol type="α"><li>Βρες τη γραμμική συνάρτηση ζήτησης.</li><li>E<sub>D</sub> όταν η τιμή αυξάνεται από 6 σε 8.</li><li>Ελαστικότητα τόξου 8↔10.</li><li>ΣΔ σε κάθε τιμή. Τι παρατηρείς;</li></ol>',
+  s:'α) β = −10/2 = −5, α = 90 + 10 = 100 ⇒ <b>Q = 100 − 5P</b>. β) (−5)·6/70 = <b>−0,43</b> ανελαστική. γ) (−5)·18/110 = <b>−0,82</b> ανελαστική. δ) ΣΔ: 180, 320, 420, 480, 500. Αυξάνεται μαζί με την τιμή, γιατί σε όλο αυτό το τμήμα η ζήτηση είναι ανελαστική.',dem:{a:100,b:-5,P1:6,P2:8}},
+ {n:19,ch:2,st:2,nw:1,t:'Πίνακας με εισόδημα (σαν Πανελλαδικές 2004)',q:tb(['','P','Q','Y'],[['Α',6,30,1000],['Β',4,80,1200],['Γ',4,50,1000]])+'<ol type="α"><li>Μεταξύ ποιων συνδυασμών υπολογίζεται η ελαστικότητα ως προς την τιμή; Υπολόγισέ την ως ελαστικότητα τόξου.</li><li>Εισοδηματική ελαστικότητα όταν το εισόδημα αυξάνεται από 1.000 σε 1.200. Τι αγαθό είναι;</li><li>Γραμμική συνάρτηση ζήτησης για Y = 1.000.</li></ol>',
+  s:'α) Α και Γ: ίδιο εισόδημα, αλλάζει μόνο η τιμή (ceteris paribus). E<sub>τ</sub> = (50 − 30)/(4 − 6)·(6 + 4)/(30 + 50) = (−10)·0,125 = <b>−1,25</b>. β) Γ→Β (ίδια τιμή): (80 − 50)/(1.200 − 1.000)·1.000/50 = 0,15·20 = <b>3</b> ⇒ κανονικό. γ) β = −10, α = 30 + 60 = 90 ⇒ <b>Q = 90 − 10P</b>.',dem:{a:90,b:-10,P1:6,P2:4}},
+ {n:20,ch:2,st:2,nw:1,t:'Μείωση τιμής 25%',q:'E<sub>D</sub> = −0,8, Q₁ = 500 μονάδες. Η τιμή μειώνεται κατά 25%. <ol type="α"><li>Πόσο % αλλάζει η ποσότητα; Ποια η νέα ποσότητα;</li><li>Πόσο % αλλάζει η ΣΔ;</li></ol>',
+  s:'α) %ΔQ = (−0,8)·(−25%) = <b>+20%</b> ⇒ Q₂ = <b>600</b>. β) 0,75·1,2 = 0,9 ⇒ ΣΔ <b>−10%</b>: ανελαστική, η ΣΔ πέφτει μαζί με την τιμή.'},
+ {n:21,ch:2,st:2,nw:1,t:'Το κράτος θέλει λιγότερη βενζίνη',q:'Σε μια πόλη καταναλώνονται 8.000 λίτρα την εβδομάδα με τιμή 1,5 €/λίτρο και E<sub>D</sub> = −0,25. Το κράτος θέλει να μειωθεί η κατανάλωση κατά 5% με πρόσθετο φόρο. <ol type="α"><li>Πόσο % πρέπει να αυξηθεί η τιμή;</li><li>Ποια η νέα τιμή και πόσος ο φόρος ανά λίτρο;</li><li>Πόσα λίτρα θα καταναλώνονται;</li></ol>',
+  s:'α) −0,25 = −5%/x ⇒ x = <b>20%</b>. β) P₂ = 1,5·1,2 = <b>1,80 €</b>, φόρος <b>0,30 €</b>. γ) 8.000·0,95 = <b>7.600 λίτρα</b>.'},
+ {n:22,ch:2,st:3,nw:1,t:'Πού γίνεται μέγιστη η ΣΔ;',q:'Q<sub>D</sub> = 200 − 8P. <ol type="α"><li>Σε ποια τιμή η ζητούμενη ποσότητα μηδενίζεται;</li><li>Βρες το μέσο της ευθείας και την ελαστικότητα εκεί.</li><li>Ποια είναι η μέγιστη ΣΔ;</li></ol>',
+  s:'α) 0 = 200 − 8P ⇒ <b>P = 25</b>. β) Μέσο: P = 12,5, Q = 100 ⇒ E = (−8)·12,5/100 = <b>−1</b>. γ) ΣΔ<sub>max</sub> = 12,5·100 = <b>1.250</b>. Δες το στο διάγραμμα «Πώς αλλάζει η ΣΔ με την τιμή».',dem:{a:200,b:-8,P1:10,P2:15}},
+ {n:23,ch:2,st:1,nw:1,t:'Σταθερή δαπάνη',q:'Οι καταναλωτές ξοδεύουν πάντα 900 € για ένα αγαθό, όποια κι αν είναι η τιμή. <ol type="α"><li>Ποια είναι η συνάρτηση ζήτησης;</li><li>Q για P = 15 και P = 20.</li><li>Ελαστικότητα τόξου μεταξύ τους.</li></ol>',
+  s:'α) <b>Q = 900/P</b> (ισοσκελής υπερβολή). β) 60 και 45. γ) (−15/5)·35/105 = (−3)·0,333 = <b>−1</b>.',hyp:true,A:900,hp:[15,20]},
+ {n:24,ch:2,st:2,nw:1,t:'Δύο αγαθά, ένας μισθός',q:'Το εισόδημα ενός καταναλωτή αυξάνεται 20%. Η ζήτηση για το αγαθό Χ αυξάνεται 30%, ενώ για το αγαθό Ζ μειώνεται 10%. <ol type="α"><li>Βρες την E<sub>Y</sub> για κάθε αγαθό.</li><li>Χαρακτήρισε τα αγαθά και πες προς τα πού μετατοπίζεται η καμπύλη ζήτησης του καθενός.</li></ol>',
+  s:'α) E<sub>Y,Χ</sub> = 30%/20% = <b>1,5</b> · E<sub>Y,Ζ</sub> = −10%/20% = <b>−0,5</b>. β) Χ κανονικό, καμπύλη δεξιά · Ζ κατώτερο, καμπύλη αριστερά.'}
+];
+let exF='all';
+function renderEX(){
+  $('#exfilter').innerHTML=[['all','Όλες'],[1,'Κεφ. 1'],[2,'Κεφ. 2'],['new','Νέες']].map(([k,l])=>`<button class="chip ${String(exF)===String(k)?'on':''}" data-f="${k}">${l}</button>`).join('');
+  $('#exlist').innerHTML=EX.filter(x=>exF==='all'||(exF==='new'?x.nw:x.ch==exF)).map(x=>`<details class="ex ${x.ch===2?'ch2':''}" data-n="${x.n}"><summary><span class="n">${x.n}</span><b>${x.t}</b>${x.nw?'<span class="new-tag">ΝΕΑ</span>':''}<span class="ch">ΚΕΦ. ${x.ch}</span><span class="stars">${'★'.repeat(x.st)}${'☆'.repeat(3-x.st)}</span></summary>
+   <div class="body"><div>${x.q}</div><div class="row"><button class="btn sm solid" data-s="${x.n}">Δείξε τη λύση</button>${x.lab||x.dem||x.hyp?`<button class="btn sm" data-l="${x.n}">Δες το στο εργαστήριο</button>`:''}</div><div class="reveal math" id="sol${x.n}" hidden>${x.s}</div></div></details>`).join('');
+}
+$('#exfilter').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){const v=b.dataset.f;exF=(v==='all'||v==='new')?v:+v;renderEX();}});
+$('#exlist').addEventListener('click',e=>{const s=e.target.closest('[data-s]'),l=e.target.closest('[data-l]');
+  if(s){const el=$('#sol'+s.dataset.s);el.hidden=!el.hidden;s.textContent=el.hidden?'Δείξε τη λύση':'Κρύψε τη λύση';S.sol=S.sol||{};S.sol[s.dataset.s]=1;save();}
+  if(l){const x=EX.find(z=>z.n==l.dataset.l);if(x.lab){setPreset(x.lab,true);location.hash='#kpd-lab';}else{stopSweep();if(x.hyp)Object.assign(D,{mode:'hyp',A:x.A||600,P1:x.hp?x.hp[0]:10,P2:x.hp?x.hp[1]:20});else Object.assign(D,{mode:'lin'},x.dem);buildSliders();bindSliders();location.hash='#demand-lab';}}});
+
+/* ---------- GENERATOR ---------- */
+function genTable(){const s=pick([10,20]);const K4=pick([[0.5,1,1.5,3],[1,2,3,4],[0.5,1.5,3,5],[1,1.5,2,4],[0.5,1,2,3],[1,2,4,5],[2,3,4,6]]);let y=K4.reduce((a,k)=>a+k*s,0);const t=[[0,y]];K4.forEach((k,i)=>{y-=k*s;t.push([(i+1)*s,y]);});return t;}
+const tblT=t=>tb(['','Χ','Ψ'],t.map((r,i)=>['ΑΒΓΔΕ'[i],fmt(r[0]),fmt(r[1])]));
+function genLinear(){const b=-pick([2,3,4,5,6,8,10]);const P1=ri(2,8),P2=P1+pick([2,4,5]);const a=Math.ceil((-b*P2+10)/10)*10+10*ri(0,3);return {a,b,P1,P2,Q1:a+b*P1,Q2:a+b*P2};}
+const G={
+ ke:{name:'Κόστος ευκαιρίας',make(){const t=genTable(),i=ri(0,3),k=kes(t)[i];return {q:`Πίνακας ΚΠΔ:${tblT(t)}Βρες το <b>ΚΕ<sub>Χ</sub></b> και το <b>ΚΕ<sub>Ψ</sub></b> για το τμήμα <b>${segName(i)}</b>.`,
+   f:[{l:'ΚΕΧ',a:k},{l:'ΚΕΨ',a:1/k}],
+   sol:`<ol class="steps math"><li><span>ΔΧ = ${t[i+1][0]} − ${t[i][0]} = ${t[i+1][0]-t[i][0]} · ΔΨ = ${t[i][1]} − ${t[i+1][1]} = ${t[i][1]-t[i+1][1]}</span></li><li><span>ΚΕ<sub>Χ</sub> = ${fr(t[i][1]-t[i+1][1],t[i+1][0]-t[i][0])} = <b class="hl">${fmt(k)}</b></span></li><li><span>ΚΕ<sub>Ψ</sub> = ${fr(1,fmt(k))} = <b class="hl">${fmt(1/k)}</b></span></li></ol>`};}},
+ pos:{name:'Θέση σημείου',make(){const t=genTable(),i=ri(0,3),s=t[1][0],k=kes(t)[i],X=t[i][0]+s/2,m=t[i][1]-k*s/2;const c=pick(['on','in','out']);const d=ri(2,9);const Y=c==='on'?m:c==='in'?Math.max(0,Math.floor(m)-d):Math.ceil(m)+d;const st=pointStatus(t,X,Y).st;
+   return {q:`Πίνακας ΚΠΔ:${tblT(t)}Πού βρίσκεται ο συνδυασμός <b>Χ = ${fmt(X)}, Ψ = ${fmt(Y)}</b>; Βρες πρώτα το Ψ<sub>max</sub>.`,
+   f:[{l:'Ψmax',a:m},{l:'Θέση',ch:[['on','Πάνω στην ΚΠΔ'],['in','Μέσα (εφικτός)'],['out','Έξω (ανέφικτος)']],a:st}],
+   sol:`<ol class="steps math"><li><span>Χ = ${fmt(X)} ⇒ τμήμα ${segName(i)}, ΚΕ<sub>Χ</sub> = ${fr(t[i][1]-t[i+1][1],t[i+1][0]-t[i][0])} = ${fmt(k)}</span></li><li><span>Ψ<sub>max</sub> = ${t[i][1]} − ${fmt(k)}·(${fmt(X)} − ${t[i][0]}) = <b class="hl">${fmt(m)}</b></span></li><li><span>Ψ = ${fmt(Y)} ${st==='on'?'=':st==='in'?'&lt;':'&gt;'} ${fmt(m)} ⇒ <b>${st==='on'?'πάνω στην ΚΠΔ':st==='in'?'μέσα, υποαπασχόληση':'έξω, ανέφικτος'}</b></span></li></ol>`,
+   side:kpdSVG(t,{W:320,H:250,noLabels:true}).svg};}},
+ lin:{name:'Συνάρτηση από 2 σημεία',make(){const L=genLinear();return {q:`Όταν P = ${L.P1} ζητούνται ${L.Q1} μονάδες. Όταν P = ${L.P2} ζητούνται ${L.Q2}. Βρες τη γραμμική συνάρτηση Q = α + βP.`,
+   f:[{l:'α',a:L.a},{l:'β',a:L.b}],
+   sol:`<ol class="steps math"><li><span>β = ${fr(`${L.Q2} − ${L.Q1}`,`${L.P2} − ${L.P1}`)} = ${fr(L.Q2-L.Q1,L.P2-L.P1)} = <b class="hl">${L.b}</b></span></li><li><span>${L.Q1} = α ${L.b<0?'−':'+'} ${Math.abs(L.b)}·${L.P1} ⇒ α = ${L.Q1} + ${-L.b*L.P1} = <b class="hl">${L.a}</b></span></li><li><span>Q = ${L.a} − ${-L.b}P · έλεγχος: ${L.a} − ${-L.b}·${L.P2} = ${L.Q2} ✔</span></li></ol>`};}},
+ ep:{name:'Ελαστικότητα σημείου',make(){const L=genLinear();const up=Math.random()<.5;const [p1,p2,q1,q2]=up?[L.P1,L.P2,L.Q1,L.Q2]:[L.P2,L.P1,L.Q2,L.Q1];const E=(q2-q1)/(p2-p1)*p1/q1;
+   return {q:`Q<sub>D</sub> = ${L.a} − ${-L.b}P. Η τιμή ${up?'αυξάνεται':'μειώνεται'} από <b>${p1}</b> σε <b>${p2}</b>. Βρες την ελαστικότητα ζήτησης (2 δεκαδικά) και χαρακτήρισε.`,
+   f:[{l:'E_D',a:E},{l:'Ζήτηση',ch:[['ελαστική','Ελαστική'],['ανελαστική','Ανελαστική'],['μοναδιαία','Μοναδιαία']],a:charD(E)}],
+   sol:`<ol class="steps math"><li><span>Q₁ = ${L.a} − ${-L.b}·${p1} = ${q1} · Q₂ = ${L.a} − ${-L.b}·${p2} = ${q2}</span></li><li><span>E<sub>D</sub> = ${fr(`${q2} − ${q1}`,`${p2} − ${p1}`)}·${fr(p1,q1)} = (${L.b})·${fmt(p1/q1,3)} = <b class="hl">${fmt(E)}</b></span></li><li><span>|E| ${Math.abs(E)>1?'&gt;':Math.abs(E)<1?'&lt;':'='} 1 ⇒ <b>${charD(E)}</b></span></li></ol>`};}},
+ ea:{name:'Ελαστικότητα τόξου',make(){const L=genLinear();const E=L.b*(L.P1+L.P2)/(L.Q1+L.Q2);
+   return {q:`Q<sub>D</sub> = ${L.a} − ${-L.b}P. Βρες την ελαστικότητα <b>τόξου</b> μεταξύ P = ${L.P1} και P = ${L.P2} και χαρακτήρισε. Πώς αλλάζει η ΣΔ όταν η τιμή ανεβαίνει;`,
+   f:[{l:'E τόξου',a:E},{l:'ΣΔ',ch:[['up','Αυξάνεται'],['down','Μειώνεται'],['same','Σταθερή']],a:(L.P2*L.Q2>L.P1*L.Q1)?'up':(L.P2*L.Q2<L.P1*L.Q1)?'down':'same'}],
+   sol:`<ol class="steps math"><li><span>Q₁ = ${L.Q1}, Q₂ = ${L.Q2}</span></li><li><span>E<sub>τ</sub> = (${L.b})·${fr(`${L.P1} + ${L.P2}`,`${L.Q1} + ${L.Q2}`)} = (${L.b})·${fmt((L.P1+L.P2)/(L.Q1+L.Q2),3)} = <b class="hl">${fmt(E)}</b> ⇒ ${charD(E)}</span></li><li><span>ΣΔ: ${L.P1}·${L.Q1} = ${L.P1*L.Q1} → ${L.P2}·${L.Q2} = ${L.P2*L.Q2}</span></li></ol>`,
+   side:demandSVG({mode:'lin',a:L.a,b:L.b,P1:L.P1,P2:L.P2},{W:320,H:260})};}},
+ pct:{name:'Ποσοστά & ΣΔ',make(){const E=pick([-0.4,-0.5,-0.8,-1.5,-2,-2.5]);const p=pick([5,10,20,-10,-20]);const q=E*p;const sd=((1+p/100)*(1+q/100)-1)*100;
+   return {q:`Η ελαστικότητα ζήτησης είναι E<sub>D</sub> = ${fmt(E)}. Η τιμή ${p>0?'αυξάνεται':'μειώνεται'} κατά ${Math.abs(p)}%. Βρες το %ΔQ και το %ΔΣΔ (με πρόσημο).`,
+   f:[{l:'%ΔQ',a:q},{l:'%ΔΣΔ',a:sd}],
+   sol:`<ol class="steps math"><li><span>%ΔQ = E·%ΔP = (${fmt(E)})·(${p>0?'+':''}${p}%) = <b class="hl">${fmt(q)}%</b></span></li><li><span>ΣΔ₂/ΣΔ₁ = (1 ${p>0?'+':'−'} ${fmt(Math.abs(p)/100)})·(1 ${q>0?'+':'−'} ${fmt(Math.abs(q)/100,3)}) = ${fmt((1+p/100)*(1+q/100),4)}</span></li><li><span>%ΔΣΔ = <b class="hl">${fmt(sd)}%</b> · ${Math.abs(E)>1?'ελαστική: ΣΔ αντίθετα από P':'ανελαστική: ΣΔ μαζί με P'}</span></li></ol>`};}},
+ ey:{name:'Εισοδηματική ελαστικότητα',make(){let Y1,dY,Q1,E,dQ,n=0;do{Y1=pick([800,1000,1200,1500,2000]);dY=Y1*pick([0.1,0.2,0.25,0.5]);Q1=pick([20,40,50,60,80,100]);E=pick([-0.8,-0.5,-0.4,0.5,1,1.25,1.5,2]);dQ=E*dY/Y1*Q1;n++;}while((Math.abs(dQ-Math.round(dQ))>1e-9||Q1+dQ<=0)&&n<200);
+   const Q2=Q1+dQ,Y2=Y1+dY;
+   return {q:`Με σταθερή τιμή, όταν το εισόδημα αυξάνεται από ${fmt(Y1)} σε ${fmt(Y2)} €, η ζητούμενη ποσότητα πάει από ${Q1} σε ${fmt(Q2)}. Βρες την E<sub>Y</sub> και χαρακτήρισε το αγαθό.`,
+   f:[{l:'E_Y',a:E},{l:'Αγαθό',ch:[['κανονικό','Κανονικό'],['κατώτερο','Κατώτερο']],a:E>0?'κανονικό':'κατώτερο'}],
+   sol:`<ol class="steps math"><li><span>E<sub>Y</sub> = ${fr(`${fmt(Q2)} − ${Q1}`,`${fmt(Y2)} − ${fmt(Y1)}`)}·${fr(fmt(Y1),Q1)} = <b class="hl">${fmt(E)}</b></span></li><li><span>${E>0?'E<sub>Y</sub> &gt; 0 ⇒ <b>κανονικό</b>':'E<sub>Y</sub> &lt; 0 ⇒ <b>κατώτερο</b>'}</span></li></ol>`};}},
+ fill:{name:'Συμπλήρωση πίνακα',make(){const t=genTable(),k=kes(t),s=t[1][0];const L='ΑΒΓΔΕ';
+   const rows=t.map((r,i)=>[L[i],fmt(r[0]),(i===1||i===3)?'<b style="color:var(--bad)">;</b>':fmt(r[1])]);
+   return {q:`Συμπλήρωσε τα κενά του πίνακα, αν ΚΕ<sub>Χ</sub>(Α→Β) = <b>${fmt(k[0])}</b> και ΚΕ<sub>Χ</sub>(Γ→Δ) = <b>${fmt(k[2])}</b>.${tb(['','Χ','Ψ'],rows)}`,
+   f:[{l:'Ψ_Β',a:t[1][1]},{l:'Ψ_Δ',a:t[3][1]}],
+   sol:`<ol class="steps math"><li><span>ΔΨ = ΚΕ<sub>Χ</sub>·ΔΧ</span></li><li><span>Ψ<sub>Β</sub> = ${t[0][1]} − ${fmt(k[0])}·${s} = <b class="hl">${t[1][1]}</b></span></li><li><span>Ψ<sub>Δ</sub> = ${t[2][1]} − ${fmt(k[2])}·${s} = <b class="hl">${t[3][1]}</b></span></li></ol>`};}},
+ sac:{name:'Θυσία σε πολλά τμήματα',make(){const t=genTable(),k=kes(t),s=t[1][0];const i=ri(0,2),j=ri(i+1,3);const Xa=t[i][0]+s/2,Xb=t[j][0]+s/2;const ya=psiMax(t,Xa).val,yb=psiMax(t,Xb).val;
+   let rows=[];for(let g=i;g<=j;g++){const s0=Math.max(Xa,t[g][0]),s1=Math.min(Xb,t[g+1][0]);if(s1>s0)rows.push(`${fmt(k[g])}·${fmt(s1-s0)} = ${fmt(k[g]*(s1-s0))} (${segName(g)})`);}
+   return {q:`Πίνακας ΚΠΔ:${tblT(t)}Η οικονομία θέλει να αυξήσει το Χ από <b>${fmt(Xa)}</b> σε <b>${fmt(Xb)}</b>. Πόσες μονάδες Ψ θα θυσιάσει συνολικά;`,
+   f:[{l:'Θυσία Ψ',a:ya-yb}],
+   sol:`<ol class="steps math">${rows.map(r=>`<li><span>${r}</span></li>`).join('')}<li><span>Σύνολο = <b class="hl">${fmt(ya-yb)}</b> · έλεγχος: ${fmt(ya)} − ${fmt(yb)} ✔</span></li></ol>`,side:kpdSVG(t,{W:320,H:250,noLabels:true,points:[{x:Xa,y:ya,label:'από'},{x:Xb,y:yb,label:'σε'}]}).svg};}},
+ fromE:{name:'Συνάρτηση από ελαστικότητα',make(){let b,P1,Q1,E,n=0;do{b=-pick([2,3,4,5,10]);P1=pick([4,5,6,8,10,12]);Q1=pick([20,24,25,30,40,50,60,80,100]);E=b*P1/Q1;n++;}while((Math.abs(E*100-Math.round(E*100))>1e-9||Math.abs(E)>3)&&n<300);const a=Q1-b*P1;
+   return {q:`Η ζήτηση είναι γραμμική. Στην τιμή P₁ = ${P1} ζητούνται Q₁ = ${Q1} μονάδες και η ελαστικότητα σε αυτό το σημείο είναι E<sub>D</sub> = ${fmt(E)}. Βρες τη συνάρτηση Q = α + βP.`,
+   f:[{l:'α',a:a},{l:'β',a:b}],
+   sol:`<ol class="steps math"><li><span>Στη γραμμική ΔQ/ΔP = β ⇒ E = β·${fr('P₁','Q₁')}</span></li><li><span>${fmt(E)} = β·${fr(P1,Q1)} ⇒ β = ${fmt(E)}·${fr(Q1,P1)} = <b class="hl">${b}</b></span></li><li><span>${Q1} = α ${b<0?'−':'+'} ${-b}·${P1} ⇒ α = <b class="hl">${a}</b> ⇒ Q = ${a} − ${-b}P</span></li></ol>`};}},
+ newQ:{name:'Νέα ποσότητα από E',make(){const P1=pick([10,20,40,50,100]),Q1=pick([200,500,1000,2000,5000]),E=pick([-0.4,-0.5,-0.8,-1.5,-2]),p=pick([10,20,-10,-20,25]);const P2=P1*(1+p/100),Q2=Q1*(1+E*p/100);const up=P2*Q2>P1*Q1;
+   return {q:`Στην τιμή ${fmt(P1)} € ζητούνται ${fmt(Q1)} μονάδες και E<sub>D</sub> = ${fmt(E)}. Η τιμή γίνεται <b>${fmt(P2)} €</b>. Βρες τη νέα ποσότητα και πες τι γίνεται με τα έσοδα των επιχειρήσεων.`,
+   f:[{l:'Q₂',a:Q2},{l:'Έσοδα',ch:[['up','Αυξάνονται'],['down','Μειώνονται'],['same','Σταθερά']],a:up?'up':'down'}],
+   sol:`<ol class="steps math"><li><span>${fmt(E)} = ${fr(`Q₂ − ${fmt(Q1)}`,`${fmt(P2)} − ${fmt(P1)}`)}·${fr(fmt(P1),fmt(Q1))}</span></li><li><span>Q₂ − ${fmt(Q1)} = ${fmt(E)}·${fmt(P2-P1)}·${fr(fmt(Q1),fmt(P1))} = ${fmt(Q2-Q1)} ⇒ <b class="hl">Q₂ = ${fmt(Q2)}</b></span></li><li><span>ΣΔ: ${fmt(P1*Q1)} → ${fmt(P2*Q2)} ⇒ ${up?'αυξάνονται':'μειώνονται'} (${charD(E)} ζήτηση)</span></li></ol>`};}},
+ tax:{name:'Πόσο να ανέβει η τιμή;',make(){const Q=pick([6000,8000,10000]),P=pick([0.8,1.2,1.5,2]),E=pick([-0.2,-0.25,-0.4,-0.5]),tg=pick([-4,-5,-6,-10]);const x=tg/E,P2=P*(1+x/100);
+   return {q:`Καταναλώνονται ${fmt(Q)} λίτρα στην τιμή ${fmt(P)} € με E<sub>D</sub> = ${fmt(E)}. Το κράτος θέλει η κατανάλωση να μειωθεί κατά ${-tg}%. Πόσο % πρέπει να αυξηθεί η τιμή και ποια θα είναι η νέα τιμή;`,
+   f:[{l:'%ΔP',a:x},{l:'P₂',a:P2}],
+   sol:`<ol class="steps math"><li><span>E = ${fr('%ΔQ','%ΔP')} ⇒ ${fmt(E)} = ${fr(`${tg}%`,'x')} ⇒ x = <b class="hl">${fmt(x)}%</b></span></li><li><span>P₂ = ${fmt(P)}·(1 + ${fmt(x/100)}) = <b class="hl">${fmt(P2)} €</b> · φόρος ${fmt(P2-P)} € ανά λίτρο</span></li></ol>`};}},
+ hyp:{name:'Ισοσκελής υπερβολή',make(){const A=pick([600,900,1200,1800,2400,3000]);const ps=[5,10,15,20,25,30,40,50,60].filter(p=>A%p===0);const P1=pick(ps);let P2=pick(ps.filter(p=>p!==P1));const Q1=A/P1,Q2=A/P2;const E=(Q2-Q1)/(P2-P1)*(P1+P2)/(Q1+Q2);
+   return {q:`Q<sub>D</sub> = ${A}/P. Η τιμή αλλάζει από ${P1} σε ${P2}. Βρες τη νέα ποσότητα, τη ΣΔ και την ελαστικότητα τόξου.`,
+   f:[{l:'Q₂',a:Q2},{l:'ΣΔ',a:A},{l:'E τόξου',a:E}],
+   sol:`<ol class="steps math"><li><span>Q₁ = ${A}/${P1} = ${fmt(Q1)} · Q₂ = ${A}/${P2} = <b class="hl">${fmt(Q2)}</b></span></li><li><span>ΣΔ = P·Q = <b class="hl">${A}</b> σε κάθε τιμή</span></li><li><span>E<sub>τ</sub> = ${fr(`${fmt(Q2)} − ${fmt(Q1)}`,`${P2} − ${P1}`)}·${fr(`${P1} + ${P2}`,`${fmt(Q1)} + ${fmt(Q2)}`)} = <b class="hl">${fmt(E)}</b></span></li></ol>`};}},
+ shift:{name:'Μετακίνηση ή μετατόπιση;',make(){const ev=pick([
+   ['Μειώνεται η τιμή του ίδιου του αγαθού Χ.','move','Αλλάζει μόνο η τιμή του Χ ⇒ κίνηση πάνω στην ίδια καμπύλη (↑ ζητούμενη ποσότητα).'],
+   ['Αυξάνεται το εισόδημα και το Χ είναι κανονικό αγαθό.','right','Κανονικό: εισόδημα ↑ ⇒ ζήτηση ↑ ⇒ καμπύλη δεξιά.'],
+   ['Αυξάνεται το εισόδημα και το Χ είναι κατώτερο αγαθό.','left','Κατώτερο: εισόδημα ↑ ⇒ ζήτηση ↓ ⇒ καμπύλη αριστερά.'],
+   ['Ακριβαίνει ένα υποκατάστατο αγαθό του Χ.','right','Οι καταναλωτές στρέφονται στο Χ ⇒ καμπύλη δεξιά.'],
+   ['Ακριβαίνει ένα συμπληρωματικό αγαθό του Χ.','left','Αγοράζεται λιγότερο το συμπληρωματικό, άρα και το Χ ⇒ αριστερά.'],
+   ['Μια διαφήμιση κάνει το Χ πολύ δημοφιλές.','right','Προτιμήσεις υπέρ του Χ ⇒ καμπύλη δεξιά.'],
+   ['Φθηναίνει ένα υποκατάστατο αγαθό του Χ.','left','Οι καταναλωτές φεύγουν προς το φθηνότερο υποκατάστατο ⇒ αριστερά.'],
+   ['Αυξάνεται ο αριθμός των καταναλωτών.','right','Περισσότεροι αγοραστές ⇒ καμπύλη δεξιά.'],
+   ['Αυξάνεται η τιμή του ίδιου του αγαθού Χ.','move','Αλλάζει μόνο η τιμή του Χ ⇒ κίνηση πάνω στην καμπύλη (↓ ζητούμενη ποσότητα).']]);
+   return {q:`<b>${ev[0]}</b><br>Τι συμβαίνει στην καμπύλη ζήτησης του Χ;`,f:[{l:'Αποτέλεσμα',ch:[['right','Μετατόπιση δεξιά'],['left','Μετατόπιση αριστερά'],['move','Κίνηση πάνω στην ίδια καμπύλη']],a:ev[1]}],sol:`<p class="res" style="margin:0">${ev[2]}</p>`};}}
+};
+const GKEYS=Object.keys(G);
+let gType='pos',gCur=null,gCounted=false;
+function newGen(){const real=gType==='mix'?pick(GKEYS):gType;gCur=G[real].make();gCounted=false;
+  $('#gtypes').innerHTML=`<button class="chip ${gType==='mix'?'on':''}" data-g="mix">Ανάμεικτα</button>`+Object.entries(G).map(([k,v])=>`<button class="chip ${gType===k?'on':''}" data-g="${k}">${v.name}</button>`).join('');
+  $('#gbox').innerHTML=`<div class="row" style="justify-content:space-between"><div class="lbl">${G[real].name}${gType==='mix'?' · τυχαίο':''}</div><button class="btn sm" id="gnew">Νέα άσκηση</button></div>
+   <div class="${gCur.side?'lab':''}" style="gap:16px"><div class="stack"><div class="gen-q">${gCur.q}</div>
+   <div class="fields">${gCur.f.map((x,i)=>x.ch?`<div class="field"><label for="ga${i}">${x.l}</label><select id="ga${i}"><option value="">Διάλεξε…</option>${x.ch.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select></div>`:`<div class="field"><label for="ga${i}">${x.l.replace('_D','<sub>D</sub>').replace('_Y','<sub>Y</sub>').replace('ΚΕΧ','ΚΕ<sub>Χ</sub>').replace('ΚΕΨ','ΚΕ<sub>Ψ</sub>').replace('Ψmax','Ψ<sub>max</sub>').replace('Ψ_Β','Ψ<sub>Β</sub>').replace('Ψ_Δ','Ψ<sub>Δ</sub>')}</label><input id="ga${i}" type="text" inputmode="decimal" autocomplete="off"></div>`).join('')}</div>
+   <div class="row"><button class="btn solid" id="gcheck">Έλεγχος</button><button class="btn" id="gshow">Δείξε τη λύση</button></div>
+   <div id="gres" class="res"></div><div class="reveal" id="gsol" hidden>${gCur.sol}</div></div>${gCur.side?`<div>${gCur.side}</div>`:''}</div>`;
+  $$('#gbox svg').forEach(s=>s.style.cursor='default');
+}
+$('#gtypes').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b){gType=b.dataset.g;newGen();}});
+$('#gbox').addEventListener('click',e=>{
+  if(e.target.id==='gnew')newGen();
+  if(e.target.id==='gshow'){const s=$('#gsol');s.hidden=!s.hidden;e.target.textContent=s.hidden?'Δείξε τη λύση':'Κρύψε τη λύση';}
+  if(e.target.id==='gcheck'){let all=true,empty=false;gCur.f.forEach((x,i)=>{const el=$('#ga'+i);let ok;if(x.ch){ok=el.value===x.a;if(!el.value)empty=true;}else{const v=parseNum(el.value);if(isNaN(v))empty=true;ok=!isNaN(v)&&close(v,x.a);}el.classList.toggle('ok',ok);el.classList.toggle('bad',!ok);if(!ok)all=false;});
+    if(empty&&!all){$('#gres').innerHTML='<span class="muted">Συμπλήρωσε όλα τα πεδία πριν τον έλεγχο.</span>';return;}
+    if(!gCounted){S.gen.tries++;if(all)S.gen.correct++;gCounted=true;save();}
+    $('#gres').innerHTML=all?verdict('Σωστό! Πάτα «Νέα άσκηση» για την επόμενη.','ok'):verdict('Κάτι δεν βγαίνει. Δες τα κόκκινα πεδία ή άνοιξε τη λύση.','bad');
+    if(!all){$('#gsol').hidden=false;$('#gshow').textContent='Κρύψε τη λύση';}}});
+
+/* ---------- QUIZ ---------- */
+const QZ=[
+ ['tf','Η ΚΠΔ δείχνει τις μεγαλύτερες ποσότητες ενός προϊόντος που μπορούν να παραχθούν για κάθε δεδομένη ποσότητα του άλλου.','Σ','Είναι ο ορισμός του σχολικού βιβλίου.'],
+ ['tf','Ένας συνδυασμός κάτω από την ΚΠΔ σημαίνει ότι κάποιοι συντελεστές υποαπασχολούνται.','Σ','Μέσα στην καμπύλη = δεν αξιοποιούνται όλοι οι πόροι.'],
+ ['tf','Η βελτίωση της τεχνολογίας μετατοπίζει την ΚΠΔ αριστερά.','Λ','Τη μετατοπίζει δεξιά: παράγονται περισσότερα.'],
+ ['tf','Το ΚΕ είναι συνήθως αυξανόμενο, γιατί οι συντελεστές δεν είναι εξίσου κατάλληλοι για όλα τα αγαθά.','Σ','Γι\' αυτό η ΚΠΔ είναι κοίλη.'],
+ ['tf','Αν ΚΕ<sub>Χ</sub> = 4 μεταξύ δύο συνδυασμών, τότε ΚΕ<sub>Ψ</sub> = 0,25.','Σ','ΚΕ<sub>Ψ</sub> = 1/ΚΕ<sub>Χ</sub> = 1/4.'],
+ ['tf','Το πραγματικό κόστος ενός αγαθού είναι τα άλλα αγαθά που θυσιάστηκαν για την παραγωγή του.','Σ','Αυτό είναι το κόστος ευκαιρίας.'],
+ ['tf','Όταν η τιμή αυξάνεται, ceteris paribus, η ζητούμενη ποσότητα αυξάνεται.','Λ','Νόμος ζήτησης: μειώνεται.'],
+ ['tf','Η αύξηση του εισοδήματος προκαλεί κίνηση πάνω στην ίδια καμπύλη ζήτησης.','Λ','Το εισόδημα μετατοπίζει ολόκληρη την καμπύλη.'],
+ ['tf','Σε ελαστική ζήτηση, όταν η τιμή μειώνεται, η ΣΔ αυξάνεται.','Σ','Ελαστική: η ΣΔ κινείται αντίθετα από την τιμή.'],
+ ['tf','Στην ισοσκελή υπερβολή η ΣΔ παραμένει σταθερή.','Σ','P·Q = A για κάθε τιμή.'],
+ ['tf','Αγαθό με αρνητική εισοδηματική ελαστικότητα λέγεται κανονικό.','Λ','Λέγεται κατώτερο.'],
+ ['tf','Στο μέσο μιας ευθύγραμμης καμπύλης ζήτησης |E<sub>D</sub>| = 1.','Σ','Πάνω από το μέσο ελαστική, κάτω ανελαστική.'],
+ ['tf','Αν αυξηθεί η τιμή ενός υποκατάστατου, η ζήτηση του αγαθού μειώνεται.','Λ','Αυξάνεται: οι καταναλωτές στρέφονται στο δικό μας αγαθό.'],
+ ['tf','Η ελαστικότητα τόξου δίνει ίδιο αποτέλεσμα είτε η τιμή αυξάνεται είτε μειώνεται.','Σ','Γιατί χρησιμοποιεί αθροίσματα P₁+P₂ και Q₁+Q₂.'],
+ ['mc','Συνδυασμός δεξιά από την ΚΠΔ:',['εφικτός με υποαπασχόληση','ανέφικτος με τους υπάρχοντες συντελεστές','αποδοτική παραγωγή','δείχνει ανεργία'],1,'Δεν φτάνουν οι πόροι για να παραχθεί.'],
+ ['mc','Αν η ΚΠΔ είναι ευθεία, το κόστος ευκαιρίας είναι:',['αυξανόμενο','μειούμενο','σταθερό','μηδέν'],2,'Ίδια κλίση παντού = ίδιο ΚΕ.'],
+ ['mc','Η αύξηση της ανεργίας:',['μετατοπίζει την ΚΠΔ δεξιά','μετατοπίζει την ΚΠΔ αριστερά','φέρνει σημείο κάτω από την ΚΠΔ','δεν επηρεάζει την παραγωγή'],2,'Οι πόροι υπάρχουν, απλώς δεν χρησιμοποιούνται.'],
+ ['mc','E<sub>D</sub> = −2 και τιμή +5%. Η ποσότητα:',['αυξάνεται 10%','μειώνεται 10%','μειώνεται 2,5%','μειώνεται 7%'],1,'%ΔQ = −2·5% = −10%.'],
+ ['mc','E<sub>D</sub> = −0,4 και η τιμή μειώνεται. Η ΣΔ:',['αυξάνεται','μειώνεται','μένει σταθερή','δεν ξέρουμε'],1,'Ανελαστική: η ΣΔ ακολουθεί την τιμή.'],
+ ['mc','Αύξηση εισοδήματος για κατώτερο αγαθό:',['καμπύλη δεξιά','καμπύλη αριστερά','κίνηση πάνω στην καμπύλη','καμία επίδραση'],1,'Κατώτερο: περισσότερο εισόδημα ⇒ λιγότερη ζήτηση.'],
+ ['mc','Στη Q = α + βP ισχύει:',['α > 0, β > 0','α < 0, β < 0','α > 0, β < 0','α = 0'],2,'β αρνητικό λόγω νόμου ζήτησης.'],
+ ['mc','Κάθετη καμπύλη ζήτησης ⇒ ελαστικότητα:',['0','−1','άπειρη','> 1'],0,'Η ποσότητα δεν αλλάζει καθόλου.']
+];
+function renderQZ(){
+  $('#qlist').innerHTML=QZ.map((q,i)=>{const ans=S.quiz[i];const done=ans!==undefined;const opts=q[0]==='tf'?[['Σ','Σωστό'],['Λ','Λάθος']]:q[2].map((o,j)=>[j,o]);const right=q[0]==='tf'?q[2]:q[3];
+    return `<div class="qitem" data-i="${i}"><div class="qt"><span class="i">${i+1}</span><span>${q[0]==='tf'?'<span class="lbl" style="margin-right:6px">Σ/Λ</span>':'<span class="lbl" style="margin-right:6px">Π.Ε.</span>'}${q[1]}</span></div>
+    <div class="opts" ${q[0]==='tf'?'style="grid-template-columns:repeat(2,minmax(0,140px))"':''}>${opts.map(([v,l])=>`<button class="opt ${done&&String(v)===String(right)?'right':''} ${done&&S.quizPick&&String(S.quizPick[i])===String(v)&&String(v)!==String(right)?'wrong':''}" data-v="${v}" ${done?'disabled':''}>${l}</button>`).join('')}</div>
+    ${done?`<div class="qexp">${ans?verdict('Σωστά','ok'):verdict('Λάθος','bad')} ${q[0]==='tf'?q[3]:q[4]}</div>`:''}</div>`;}).join('');
+  const c=Object.values(S.quiz).filter(Boolean).length;$('#qscore').textContent=`${c} / ${QZ.length}`;
+}
+$('#qlist').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b||b.disabled)return;const i=+b.closest('.qitem').dataset.i,q=QZ[i];const right=q[0]==='tf'?q[2]:q[3];
+  S.quiz[i]=String(b.dataset.v)===String(right);S.quizPick=S.quizPick||{};S.quizPick[i]=b.dataset.v;save();renderQZ();});
+$('#qreset').addEventListener('click',()=>{S.quiz={};S.quizPick={};save();renderQZ();});
+
+/* ---------- ROUTER ---------- */
+function route(){const h=(location.hash||'#home').slice(1);const v=VIEWS.includes(h)?h:'home';
+  $$('.view').forEach(x=>x.hidden=x.id!=='v-'+v);$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  S.seen[v]=1;save();window.scrollTo(0,0);
+  if(v!=='kpd-lab')stopTravel();if(v!=='demand-lab')stopSweep();
+  if(v==='kpd-lab'){animK=true;renderK(false);} if(v==='demand-lab'){animD=true;renderD();}}
+window.addEventListener('hashchange',route);
+
+/* ---------- boot ---------- */
+miniCharts();renderF();setPreset('l1',true);buildSliders();bindSliders();renderD();renderEY();renderWK();renderEX();newGen();renderQZ();route();
+})();
+</script>
+
+</body>
+</html>
