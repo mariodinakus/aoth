@@ -3,36 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="ΑΟΘ Γ΄ Λυκείου, Κεφάλαια 1 & 2: εργαστήρια ΚΠΔ και ελαστικότητας, λυμένα, άπειρες ασκήσεις και quiz.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0e1f'/%3E%3Cpath d='M12 50 C 26 48 40 34 46 14' fill='none' stroke='%235eead4' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='14' r='5' fill='%23ff9470'/%3E%3C/svg%3E">
+<meta name="description" content="AOTH · ΑΟΘ Γ΄ Λυκείου, Κεφάλαια 1 & 2: εργαστήρια ΚΠΔ και ελαστικότητας, λυμένα, άπειρες ασκήσεις και quiz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0e0b'/%3E%3Cpath d='M12 50 C 26 48 40 34 46 14' fill='none' stroke='%23d8b660' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='14' r='5' fill='%23efe6cd'/%3E%3C/svg%3E">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>ΑΟΘ Εργαστήριο</title>
+<title>AOTH</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,600;0,800;1,400&family=Commissioner:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">
 <style>
-/* Layout: night study console, chapter-coded (teal = Κεφ.1, coral = Κεφ.2) — fixed left rail of chapters, wide working canvas on the right; labs pair a live chart with step-by-step math. */
+/* Layout: dark study console in the PDF's black-and-gold — fixed left rail of chapters, wide working canvas on the right; labs pair a live chart with step-by-step math. */
 :root{
-  --bg:#0a0e1f; --surface:#11173a; --surface-2:#19204a; --line:#283266; --fg:#eaedff; --muted:#9ba4d4;
-  --gold:#5eead4; --gold-2:#2bb5a0; --gold-fill:rgba(94,234,212,.15); --ok:#7ee08f; --bad:#ff6b8b; --ink-on-gold:#05231f;
-  --c2:#ff9470; --c2-2:#d9704f; --c2-fill:rgba(255,148,112,.17); --violet:#a99bff;
-  --hatch:rgba(255,107,139,.30);
-  --glow-1:rgba(94,234,212,.16); --glow-2:rgba(255,148,112,.14); --glow-3:rgba(169,155,255,.14);
+  --bg:#0f0e0b; --surface:#17150f; --surface-2:#201d15; --line:#332e22; --fg:#efe6cd; --muted:#a89d80; --gold:#d8b660; --gold-2:#a8862f; --gold-fill:rgba(216,182,96,.16); --ok:#7cc48a; --bad:#e57b67; --ink-on-gold:#16140f; --c2:#d8b660; --c2-2:#a8862f; --c2-fill:rgba(216,182,96,.16); --violet:#a8862f; --hatch:rgba(229,123,103,.28); --glow-1:rgba(216,182,96,.14); --glow-2:rgba(216,182,96,.07); --glow-3:rgba(168,134,47,.08);
   --f-display:"Noto Serif Display","Noto Serif",Georgia,serif;
   --f-body:"Commissioner","Noto Sans","Segoe UI",system-ui,sans-serif;
   --f-mono:"JetBrains Mono","DejaVu Sans Mono",ui-monospace,monospace;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
-  --bg:#f3f5fc; --surface:#ffffff; --surface-2:#e9edfa; --line:#d5dbf0; --fg:#141933; --muted:#566086;
-  --gold:#0b8a78; --gold-2:#14a690; --gold-fill:rgba(11,138,120,.12); --ok:#23864a; --bad:#c8304f; --ink-on-gold:#ffffff;
-  --c2:#d4562f; --c2-2:#e57d5b; --c2-fill:rgba(212,86,47,.13); --violet:#6a55e0; --hatch:rgba(200,48,79,.22);
-  --glow-1:rgba(11,138,120,.10); --glow-2:rgba(212,86,47,.09); --glow-3:rgba(106,85,224,.08); color-scheme:light}}
+  --bg:#f7f3e8; --surface:#fffdf7; --surface-2:#f0e9d6; --line:#e0d6bd; --fg:#1d1b16; --muted:#6c634f; --gold:#94701f; --gold-2:#b8913a; --gold-fill:rgba(168,131,46,.16); --ok:#2f7a40; --bad:#b0412f; --ink-on-gold:#fffdf7; --c2:#94701f; --c2-2:#b8913a; --c2-fill:rgba(168,131,46,.16); --violet:#b8913a; --hatch:rgba(176,65,47,.22); --glow-1:rgba(168,131,46,.10); --glow-2:rgba(168,131,46,.05); --glow-3:rgba(184,145,58,.06); color-scheme:light}}
 :root[data-theme="light"]{
-  --bg:#f3f5fc; --surface:#ffffff; --surface-2:#e9edfa; --line:#d5dbf0; --fg:#141933; --muted:#566086;
-  --gold:#0b8a78; --gold-2:#14a690; --gold-fill:rgba(11,138,120,.12); --ok:#23864a; --bad:#c8304f; --ink-on-gold:#ffffff;
-  --c2:#d4562f; --c2-2:#e57d5b; --c2-fill:rgba(212,86,47,.13); --violet:#6a55e0; --hatch:rgba(200,48,79,.22);
-  --glow-1:rgba(11,138,120,.10); --glow-2:rgba(212,86,47,.09); --glow-3:rgba(106,85,224,.08); color-scheme:light}
+  --bg:#f7f3e8; --surface:#fffdf7; --surface-2:#f0e9d6; --line:#e0d6bd; --fg:#1d1b16; --muted:#6c634f; --gold:#94701f; --gold-2:#b8913a; --gold-fill:rgba(168,131,46,.16); --ok:#2f7a40; --bad:#b0412f; --ink-on-gold:#fffdf7; --c2:#94701f; --c2-2:#b8913a; --c2-fill:rgba(168,131,46,.16); --violet:#b8913a; --hatch:rgba(176,65,47,.22); --glow-1:rgba(168,131,46,.10); --glow-2:rgba(168,131,46,.05); --glow-3:rgba(184,145,58,.06); color-scheme:light}
 
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -266,8 +256,8 @@ table.t tr.cur td{background:var(--gold-fill)}
   <aside class="rail">
     <div class="brand">
       <div class="k">Γ΄ Λυκείου · Μάθημα 1</div>
-      <div class="t">ΑΟ<span>Θ</span></div>
-      <div class="s">Κεφάλαια 1 &amp; 2 · Εργαστήριο</div>
+      <div class="t">AO<span>TH</span></div>
+      <div class="s">Αρχές Οικονομικής Θεωρίας · Κεφ. 1 &amp; 2</div>
     </div>
     <nav class="nav" id="nav">
       <div class="grp">Ξεκίνα</div>
