@@ -397,6 +397,19 @@ textarea.ans:focus{outline:none;border-color:var(--gold)}
 #tgr input{width:100%;padding:6px 8px;font-size:13.5px}
 @media (max-width:720px){.tg,.two2{grid-template-columns:minmax(0,1fr)}}
 
+
+body.gated{overflow:hidden}
+#gate{--fg:#efe6cd;--bg:#0e0d0a;--muted:#a89770;--surface:#16140f;--surface-2:#221e15;--line:#3a3322;--gold:#d8b660;color-scheme:dark}
+#gate .chip{background:#221e15;color:#efe6cd;border:1px solid #3a3322}#gate .chip.on{background:#d8b660;color:#0e0d0a;border-color:#d8b660}
+#gate .two2>*,#gate .accf label{min-width:0}#gate input{width:100%;box-sizing:border-box}
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;background:radial-gradient(110% 70% at 70% 18%,#2c2617 0%,#16140f 48%,#0b0a08 100%)}
+.gbox{width:100%;max-width:460px;border:1px solid rgba(216,182,96,.5);border-radius:14px;padding:26px 24px;background:rgba(15,14,11,.85);display:flex;flex-direction:column;gap:12px;color:#efe6cd}
+.gk{font-family:var(--f-mono);font-size:11px;letter-spacing:.24em;color:#c9a95a}
+.gt{font-family:var(--f-display);font-weight:800;font-size:54px;line-height:1;color:#f3ead2}.gt span{color:#d8b660}
+.gs{font-size:14px;color:#d6cdb6}
+.gtabs{display:flex;gap:6px;flex-wrap:wrap}
+.gskip{background:none;border:0;color:#a89770;font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;text-align:left;padding:0}
+
 /* ---------- macro labs ---------- */
 .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}
 .kpis>div{background:var(--surface-2);border-radius:8px;padding:10px 12px;min-width:0}
@@ -1990,8 +2003,8 @@ document.addEventListener('submit',async e=>{
   const f=e.target;if(!f.classList.contains('accf')&&!f.classList.contains('tf'))return;e.preventDefault();
   const d=Object.fromEntries(new FormData(f));const er=$('.err',f);if(er)er.hidden=true;const btn=$('button',f);btn.disabled=true;
   try{
-    if(f.id==='flog'){await accStudentIn(await api('studentLogin',{name:d.name,pin:d.pin}));renderAcc();}
-    else if(f.id==='freg'){if(d.pin!==d.pin2)throw new Error('Τα δύο PIN δεν είναι ίδια.');await accStudentIn(await api('register',{...d,progress:S}));renderAcc();}
+    if(f.id==='flog'){await accStudentIn(await api('studentLogin',{name:d.name,pin:d.pin}));gateClose();renderAcc();}
+    else if(f.id==='freg'){if(d.pin!==d.pin2)throw new Error('Τα δύο PIN δεν είναι ίδια.');await accStudentIn(await api('register',{...d,progress:S}));gateClose();renderAcc();}
     else if(f.id==='tsetup'){if(d.pin!==d.pin2)throw new Error('Οι δύο κωδικοί δεν είναι ίδιοι.');const j=await api('setup',{pin:d.pin,classCode:d.classCode});await teacherIn(j.token);}
     else if(f.id==='tlogin'){const j=await api('teacherLogin',{pin:d.pin});await teacherIn(j.token);}
     else if(f.id==='tadd'){await api('addStudent',{token:ACC.token,...d});f.reset();await renderT();}
@@ -2091,6 +2104,26 @@ document.addEventListener('input',e=>{const i=e.target.closest('[data-mk]');if(!
   const m=Object.assign({},TSEL_M);$$('[data-mk]').forEach(x=>{if(x.dataset.mk.startsWith(u+':')){if(x.value!=='')m[x.dataset.mk]=+x.value;else delete m[x.dataset.mk];}});
   el.textContent=Object.entries(m).filter(([k])=>k.startsWith(u+':')).reduce((a,[,x])=>a+(+x||0),0);});
 
+
+/* ---------- οθόνη σύνδεσης στην αρχή ---------- */
+function gateClose(){const g=$('#gate');if(g)g.remove();document.body.classList.remove('gated');}
+async function gateOpen(){
+  let guest=false;try{guest=sessionStorage.getItem('aoth-guest')==='1';}catch(e){}
+  if(ACC||guest)return;
+  const g=document.createElement('div');g.id='gate';document.body.classList.add('gated');
+  let st={setup:true};try{st=await api('status');}catch(e){}
+  g.innerHTML=`<div class="gbox"><div class="gk">Γ΄ ΛΥΚΕΙΟΥ · ΠΑΝΕΛΛΑΔΙΚΕΣ</div><div class="gt">AO<span>TH</span></div><div class="gs">Συνδέσου για να αποθηκεύεται η πρόοδός σου και να τη βλέπει ο καθηγητής σου.</div>
+   <div class="gtabs"><button class="chip on" data-g="a">Μαθητής · Σύνδεση</button><button class="chip" data-g="b">Νέος μαθητής</button><button class="chip" data-g="c">Καθηγητής</button></div>
+   <form class="accf" id="flog" data-p="a"><label>Ονοματεπώνυμο<input name="name" required autocomplete="name"></label><label>PIN<input name="pin" type="password" required autocomplete="current-password"></label><button class="btn solid">Σύνδεση</button><p class="err" hidden></p></form>
+   <form class="accf" id="freg" data-p="b" hidden><label>Ονοματεπώνυμο<input name="name" required placeholder="π.χ. Γιώργος Παπαδόπουλος"></label><div class="two2"><label>Σχολείο<input name="school"></label><label>Τμήμα<input name="cls" placeholder="π.χ. Γ2"></label></div><label>Κωδικός τάξης<input name="classCode" required placeholder="από τον καθηγητή σου"></label><div class="two2"><label>Διάλεξε PIN<input name="pin" type="password" required minlength="4" autocomplete="new-password"></label><label>Ξανά το PIN<input name="pin2" type="password" required minlength="4" autocomplete="new-password"></label></div><button class="btn solid">Δημιουργία λογαριασμού</button><p class="err" hidden></p></form>
+   ${st.setup?`<form class="accf" id="tlogin" data-p="c" hidden><label>Κωδικός καθηγητή<input name="pin" type="password" required autocomplete="current-password"></label><button class="btn solid">Σύνδεση καθηγητή</button><p class="err" hidden></p></form>`
+   :`<form class="accf" id="tsetup" data-p="c" hidden><p class="muted" style="margin:0;font-size:13px">Πρώτη φορά: ορίζεις κωδικό καθηγητή και κωδικό τάξης για τους μαθητές.</p><div class="two2"><label>Κωδικός καθηγητή (6+)<input name="pin" type="password" required minlength="6" autocomplete="new-password"></label><label>Ξανά<input name="pin2" type="password" required minlength="6" autocomplete="new-password"></label></div><label>Κωδικός τάξης<input name="classCode" required minlength="3" placeholder="π.χ. AOTH2027"></label><button class="btn solid">Αποθήκευση</button><p class="err" hidden></p></form>`}
+   <button class="gskip" id="gskip">Συνέχεια χωρίς λογαριασμό (δεν αποθηκεύεται η πρόοδος στον καθηγητή)</button></div>`;
+  document.body.appendChild(g);
+  g.addEventListener('click',e=>{const t=e.target.closest('[data-g]');if(t){$$('[data-g]',g).forEach(c=>c.classList.toggle('on',c===t));$$('form',g).forEach(f=>f.hidden=f.dataset.p!==t.dataset.g);}
+    if(e.target.id==='gskip'){try{sessionStorage.setItem('aoth-guest','1');}catch(x){}gateClose();}});
+}
+
 /* ---------- ROUTER ---------- */
 function route(){const h=(location.hash||'#cover').slice(1);const v=VIEWS.includes(h)?h:'cover';document.body.classList.toggle('cover-on',v==='cover');if(v!=='cover'){stopCover();S.last=v;}
   $$('.view').forEach(x=>x.hidden=x.id!=='v-'+v);$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
@@ -2100,7 +2133,7 @@ function route(){const h=(location.hash||'#cover').slice(1);const v=VIEWS.includ
   if(v==='cost-lab'){animC=true;renderCost(false);} if(v==='supply-lab'){animS=true;renderSup(false);} if(v==='market-lab'){animM=true;renderMk();}
   if(v.startsWith('ch-'))renderCH(v.slice(3));if(v==='cover')renderCover();if(v==='diagonismata'&&!$('#xbox'))renderDiag();if(v==='paradeigmata'&&!$('#rxbox'))renderParad();if(v==='logariasmos')renderAcc();if(v==='kathigitis')renderT();if(v==='gdp-lab')renderGDP(false);if(v==='labor-lab'){renderLabor();renderCycle();}if(v==='tax-lab')renderTax(false);if(v!=='labor-lab')cyStop();}
 window.addEventListener('hashchange',route);
-accBadge();tPdfLinks();
+accBadge();tPdfLinks();gateOpen();
 new MutationObserver(()=>{clearTimeout(window.__dec);window.__dec=setTimeout(()=>{const v=$$('.view').find(x=>!x.hidden);if(v)accDecorate(v);},60);}).observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
 if(ACC&&ACC.r==='s')api('me',{token:ACC.token}).then(j=>{S=mergeProg(S,j.student.progress);try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}ACC.srv={grades:j.student.grades,notes:j.student.notes,marks:j.student.marks};accSet(ACC);}).catch(e=>{if(/έληξε|βρέθηκε/.test(e.message))accSet(null);});
 
