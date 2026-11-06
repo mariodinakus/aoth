@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/aoth.js": {
+      "includeFiles": "api/_sol.json",
+      "maxDuration": 30
+    }
+  }
+}
