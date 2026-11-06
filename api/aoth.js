@@ -71,6 +71,25 @@ function sol() {
   return SOL;
 }
 
+
+// όριο προσπαθειών: 6 λάθη σε 15' ⇒ κλείδωμα 15'
+const LOCK_N = 6, LOCK_MS = 15 * 60 * 1000;
+const lkey = k => 'lock/' + crypto.createHash('sha256').update(k).digest('hex').slice(0, 24) + '.json';
+async function lockedFor(keys) {
+  let w = 0;
+  for (const k of keys) { const o = await readJSON(lkey(k)); if (o && o.until > Date.now()) w = Math.max(w, o.until - Date.now()); }
+  return w;
+}
+async function fail(keys) {
+  for (const k of keys) {
+    const o = (await readJSON(lkey(k))) || { n: 0, first: Date.now() };
+    if (Date.now() - o.first > LOCK_MS) { o.n = 0; o.first = Date.now(); delete o.until; }
+    o.n++; if (o.n >= LOCK_N) o.until = Date.now() + LOCK_MS;
+    await writeJSON(lkey(k), o);
+  }
+}
+async function clearFails(keys) { for (const k of keys) { const o = await readJSON(lkey(k)); if (o && o.n) await writeJSON(lkey(k), { n: 0, first: Date.now() }); } }
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   const send = (code, o) => res.status(code).json(o);
@@ -79,6 +98,8 @@ module.exports = async (req, res) => {
     const b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     const act = b.action;
     let cfg = await readJSON(CFG);
+    const ip = String((req.headers['x-forwarded-for'] || '').split(',')[0] || 'ip').trim();
+    const tooMany = async keys => { const w = await lockedFor(keys); if (w) { send(429, { error: 'Πολλές λάθος προσπάθειες. Δοκίμασε ξανά σε ' + Math.ceil(w / 60000) + ' λεπτά.' }); return true; } return false; };
 
     if (act === 'status') return send(200, { setup: !!cfg });
     if (act === 'setup') {
@@ -94,17 +115,25 @@ module.exports = async (req, res) => {
     if (!cfg) return send(400, { error: 'Ο καθηγητής δεν έχει ορίσει ακόμα την τάξη.' });
 
     if (act === 'teacherLogin') {
-      if (!okPin(b.pin, cfg.salt, cfg.hash)) { await sleep(700); return send(401, { error: 'Λάθος κωδικός καθηγητή.' }); }
+      const K = ['T', 'I:' + ip];
+      if (await tooMany(K)) return;
+      if (!okPin(b.pin, cfg.salt, cfg.hash)) { await fail(K); await sleep(700); return send(401, { error: 'Λάθος κωδικός καθηγητή.' }); }
+      await clearFails(K);
       return send(200, { token: sign(cfg, { r: 't' }), classCode: cfg.classCode });
     }
     if (act === 'register') {
-      if (norm(b.classCode) !== norm(cfg.classCode)) { await sleep(700); return send(401, { error: 'Λάθος κωδικός τάξης. Ζήτα τον από τον καθηγητή σου.' }); }
+      const K = ['R', 'I:' + ip];
+      if (await tooMany(K)) return;
+      if (norm(b.classCode) !== norm(cfg.classCode)) { await fail(K); await sleep(700); return send(401, { error: 'Λάθος κωδικός τάξης. Ζήτα τον από τον καθηγητή σου.' }); }
       const st = await newStudent(cfg, b, 's');
       return send(200, { token: sign(cfg, { r: 's', id: st.id }), student: pub(st) });
     }
     if (act === 'studentLogin') {
+      const K = ['S:' + norm(b.name), 'I:' + ip];
+      if (await tooMany(K)) return;
       const all = await allStudents(), st = all.find(s => norm(s.name) === norm(b.name));
-      if (!st || !okPin(b.pin, st.pinSalt, st.pinHash)) { await sleep(700); return send(401, { error: 'Λάθος ονοματεπώνυμο ή PIN.' }); }
+      if (!st || !okPin(b.pin, st.pinSalt, st.pinHash)) { await fail(K); await sleep(700); return send(401, { error: 'Λάθος ονοματεπώνυμο ή PIN.' }); }
+      await clearFails(K);
       st.lastSeen = Date.now(); await writeJSON(`students/${st.id}.json`, st);
       return send(200, { token: sign(cfg, { r: 's', id: st.id }), student: pub(st) });
     }
