@@ -1,5 +1,9 @@
 # AOTH · Αρχές Οικονομικής Θεωρίας (Γ΄ Λυκείου)
 
+> **Workspace status:** Active product — AOTH.
+>
+> **Active projects:** [NBA Atlas](https://github.com/mariodinakus/sideline-sports) · [AXON](https://github.com/mariodinakus/axon) · [MONO](https://github.com/mariodinakus/monokairos) · [PAX](https://github.com/mariodinakus/world-faultline/tree/main/pax) · [EFIMERIA ONE](https://github.com/mariodinakus/efimeria-one) · [AOTH](https://github.com/mariodinakus/aoth).
+
 Live: https://aoth.vercel.app
 
 Interactive site για όλη την εξεταστέα ύλη του ΓΕΛ.
