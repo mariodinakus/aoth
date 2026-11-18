@@ -1,0 +1,20 @@
+# Local secrets and environment
+.env
+.env.*
+!.env.example
+!.env.sample
+.vercel/
+
+# Dependencies and generated outputs
+node_modules/
+.next/
+dist/
+build/
+coverage/
+*.log
+*.tmp
+*.bak
+
+# Operating system
+.DS_Store
+Thumbs.db
